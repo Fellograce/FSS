@@ -13,6 +13,11 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.text.SimpleDateFormat;
 
 public class FfsC {
 
@@ -24,7 +29,7 @@ public class FfsC {
     void btDownloadOnAction(ActionEvent actionEvent) {
     }
     @FXML
-    void btUploadOnAction(ActionEvent actionEvent) {
+    void btUploadOnAction(ActionEvent actionEvent) throws IOException {
         selectFile();
     }
 
@@ -49,10 +54,21 @@ public class FfsC {
 
     }
 
-    private void selectFile(){
+    private void selectFile() throws IOException {
         Stage stage = (Stage) btDownload.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser(); //File
         File selcetedFile = fileChooser.showOpenDialog(stage);
         System.out.println(selcetedFile.length());
+        String[] test = selcetedFile.getName().split("\\.");
+        System.out.println(test[0]); //File name
+        System.out.println(test[1]); //File type
+
+        Path file = Paths.get(String.valueOf(selcetedFile));
+        BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        System.out.println(sdf.format(attr.creationTime()));
+
+        System.out.println(attr.creationTime());
+        System.out.println(attr.size());
     }
 }
