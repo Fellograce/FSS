@@ -1,15 +1,32 @@
 package viewController;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class FfsC {
 
+    @FXML
+    private Button btDownload;
+    @FXML
+    private Button btUpload;
+    @FXML
+    void btDownloadOnAction(ActionEvent actionEvent) {
+    }
+    @FXML
+    void btUploadOnAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private ListView lvFile;
     public static void show(Stage stage){
         try {
             FXMLLoader loader = new FXMLLoader(FfsC.class.getResource("FfsV.fxml"));
@@ -23,5 +40,9 @@ public class FfsC {
             ex.printStackTrace();
             Platform.exit();
         }
+    }
+
+    public void initialize(){
+
     }
 }
