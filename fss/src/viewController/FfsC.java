@@ -69,10 +69,14 @@ public class FfsC {
 
         Path file = Paths.get(String.valueOf(selcetedFile));
         BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
+        System.out.println(attr.creationTime());
+/*
+
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         System.out.println(sdf.format(attr.creationTime()));
 
-        System.out.println(attr.creationTime());
         System.out.println(attr.size());
+ */
+
     }
 }
