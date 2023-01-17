@@ -8,10 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 
 public class FfsC {
@@ -21,18 +19,14 @@ public class FfsC {
     @FXML
     private Button btUpload;
     @FXML
-    private ListView lvFile;
-    @FXML
-    void btDownloadOnAction(ActionEvent actionEvent) {;
+    void btDownloadOnAction(ActionEvent actionEvent) {
     }
-
     @FXML
     void btUploadOnAction(ActionEvent actionEvent) {
-        selectFile();
     }
 
-
-
+    @FXML
+    private ListView lvFile;
     public static void show(Stage stage){
         try {
             FXMLLoader loader = new FXMLLoader(FfsC.class.getResource("FfsV.fxml"));
@@ -50,12 +44,5 @@ public class FfsC {
 
     public void initialize(){
 
-    }
-
-    private void selectFile(){
-        Stage stage = (Stage) btDownload.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser();
-        File selcetedFile = fileChooser.showOpenDialog(stage);
-        System.out.println(selcetedFile.length());
     }
 }

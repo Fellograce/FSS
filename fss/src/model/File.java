@@ -3,6 +3,8 @@ package model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Objects;
+
 public class File {
     private final StringProperty filename = new SimpleStringProperty();
     private final StringProperty filepath = new SimpleStringProperty();
@@ -57,5 +59,18 @@ public class File {
 
     public void setFilesize(String filesize) {
         this.filesize.set(filesize);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        File file = (File) o;
+        return filename.equals(file.filename);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(filename);
     }
 }
