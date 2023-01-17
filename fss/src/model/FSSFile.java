@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 
 import java.util.Objects;
 
-public class File {
+public class FSSFile {
     private final StringProperty filename = new SimpleStringProperty();
     private final StringProperty filepath = new SimpleStringProperty();
     private final StringProperty filetype = new SimpleStringProperty();
@@ -65,7 +65,7 @@ public class File {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        File file = (File) o;
+        FSSFile file = (FSSFile) o;
         return filename.equals(file.filename);
     }
 

@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.FSSFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +35,10 @@ public class FfsC {
     }
 
     @FXML
-    private ListView lvFile;
+    private ListView<FSSFile> lvFile;
+
+    private FSSFile model;
+
     public static void show(Stage stage){
         try {
             FXMLLoader loader = new FXMLLoader(FfsC.class.getResource("FfsV.fxml"));

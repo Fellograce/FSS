@@ -5,18 +5,18 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.ObservableList;
 
 public class Folder {
-    private ListProperty<File> folder = new SimpleListProperty<>();
+    private ListProperty<FSSFile> folder = new SimpleListProperty<>();
     private static Folder instance;
 
-    public ObservableList<File> getFolder() {
+    public ObservableList<FSSFile> getFolder() {
         return folder.get();
     }
 
-    public ListProperty<File> folderProperty() {
+    public ListProperty<FSSFile> folderProperty() {
         return folder;
     }
 
-    public void setFolder(ObservableList<File> folder) {
+    public void setFolder(ObservableList<FSSFile> folder) {
         this.folder.set(folder);
     }
 
