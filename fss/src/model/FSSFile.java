@@ -73,4 +73,9 @@ public class FSSFile {
     public int hashCode() {
         return Objects.hash(filename);
     }
+
+    @Override
+    public String toString() {
+        return getFilename();
+    }
 }
