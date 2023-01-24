@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSFile;
+import model.Folder;
 import model.MySQLDatabase;
 
 import java.io.File;
@@ -78,6 +79,7 @@ public class FfsC {
                 filesize = String.valueOf(child.length());
             }
         }
+        lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
     }
 
     private void selectFile() throws IOException {
