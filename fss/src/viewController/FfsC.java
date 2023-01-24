@@ -15,6 +15,8 @@ import model.MySQLDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class FfsC {
 
@@ -72,7 +74,20 @@ public class FfsC {
 
         model = new FSSFile(selcetedFile.getName(), filepath, filetype, filesize);
 
-        MySQLDatabase.insert(model);
+        //MySQLDatabase.insert(model);
+
+        fileChooser.setInitialFileName(selcetedFile.getName());
+        File targetFolder = new File(sharedFolderPath);
+        fileChooser.setInitialDirectory(targetFolder);
+        if(targetFolder != null) {
+            try {
+                Files.copy(selcetedFile.toPath(), targetFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
         //Path file = Paths.get(String.valueOf(selcetedFile));
         //BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
