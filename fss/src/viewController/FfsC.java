@@ -40,11 +40,6 @@ public class FfsC {
 
     private FSSFile model;
 
-    private String filename;
-    private String filetype;
-    private String filesize;
-    private String filepath;
-
     private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
 
     public static void show(Stage stage) {
@@ -63,23 +58,24 @@ public class FfsC {
     }
 
     public void initialize() {
+        lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
+
         File dir = new File(sharedFolderPath);
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
                 String[] test = child.getName().split("\\.");
-                System.out.println("Name:    "+child.getName());
-                System.out.println("Groesse: "+child.length() + "Bytes");
-                System.out.println("Filename: "+test[0]); //File name
-                System.out.println("Typname:  "+test[1]); //File type
-                System.out.println("--------------------------");
-                filename = test[0];
-                filepath = dir.getPath();
-                filetype = test[1];
-                filesize = String.valueOf(child.length());
+
+                String filename = child.getName();
+                String filepath = child.getPath();
+                String filetype = test[1];
+                String filesize = String.valueOf(child.length() + " B");
+
+                model = new FSSFile(filename, filepath, filetype, filesize);
+
+                Folder.getInstance().saveFile(model);
             }
         }
-        lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
     }
 
     private void selectFile() throws IOException {
@@ -87,7 +83,7 @@ public class FfsC {
         FileChooser fileChooser = new FileChooser(); //File
         File selcetedFile = fileChooser.showOpenDialog(stage);
 
-        String filesize = String.valueOf(selcetedFile.length() + "B");
+        String filesize = String.valueOf(selcetedFile.length() + " B");
 
         String[] file = selcetedFile.getName().split("\\.");
         String filetype = file[1]; //File type
