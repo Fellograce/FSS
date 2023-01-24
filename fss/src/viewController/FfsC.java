@@ -63,7 +63,7 @@ public class FfsC {
     }
 
     public void initialize() {
-        File dir = new File("C:\\Users\\alexa\\FSS\\fss\\files");
+        File dir = new File(sharedFolderPath);
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
