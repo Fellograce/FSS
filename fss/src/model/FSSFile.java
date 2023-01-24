@@ -66,6 +66,6 @@ public class FSSFile {
 
     @Override
     public String toString() {
-        return getFilename();
+        return filename;
     }
 }

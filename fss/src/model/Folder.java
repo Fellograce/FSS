@@ -21,10 +21,19 @@ public class Folder {
     }
 
     public static Folder getInstance() {
+        if (instance == null) {
+            instance = new Folder();
+        }
         return instance;
     }
 
     public static void setInstance(Folder instance) {
         Folder.instance = instance;
+    }
+
+    public void saveFile(FSSFile file) {
+        if (!folder.contains(file)) {
+            folder.add(file);
+        }
     }
 }
