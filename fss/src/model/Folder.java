@@ -2,14 +2,16 @@ package model;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
+import java.util.LinkedList;
 
 public class Folder {
 
-   // private List l = new LinkedList<FSSFile>();
-    private ListProperty<FSSFile> folder = new SimpleListProperty<>();
+    private ObservableList<FSSFile> observableList = FXCollections.observableList(new LinkedList<>());
+    private ListProperty<FSSFile> folder = new SimpleListProperty<>(observableList);
     private static Folder instance;
     private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
 
@@ -46,9 +48,7 @@ public class Folder {
         File dir = new File(sharedFolderPath);
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
-            System.out.println("in if");
             for (File child : directoryListing) {
-                System.out.println("in for");
                 String[] test = child.getName().split("\\.");
 
                 String filename = child.getName();

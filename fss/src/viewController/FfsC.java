@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSFile;
 import model.Folder;
+import model.MySQLDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -95,6 +96,7 @@ public class FfsC {
         String filepath = sharedFolderPath + selcetedFile.getName();
 
         model = new FSSFile(selcetedFile.getName(), filepath, filetype, filesize);
+        Folder.getInstance().saveFile(model);
         //MySQLDatabase.insert(model);
 
         fileChooser.setInitialFileName(selcetedFile.getName());
