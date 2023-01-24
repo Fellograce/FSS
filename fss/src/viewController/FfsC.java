@@ -77,7 +77,7 @@ public class FfsC {
         //MySQLDatabase.insert(model);
 
         fileChooser.setInitialFileName(selcetedFile.getName());
-        File targetFolder = new File(sharedFolderPath);
+        File targetFolder = new File(filepath);
         fileChooser.setInitialDirectory(targetFolder);
         if(targetFolder != null) {
             try {
