@@ -1,9 +1,10 @@
 package model;
 
 
+
 import java.util.Objects;
 
-public class FSSFile {
+public class FSSFile  {
     private String filename;
     private String filepath;
     private String filetype;

@@ -12,7 +12,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSFile;
 import model.Folder;
-import model.MySQLDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,8 +57,10 @@ public class FfsC {
     }
 
     public void initialize() {
+        //Folder.getInstance().loadAllFiles();
         lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
 
+        /*
         File dir = new File(sharedFolderPath);
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
@@ -76,6 +77,9 @@ public class FfsC {
                 Folder.getInstance().saveFile(model);
             }
         }
+
+         */
+
     }
 
     private void selectFile() throws IOException {
@@ -91,20 +95,18 @@ public class FfsC {
         String filepath = sharedFolderPath + selcetedFile.getName();
 
         model = new FSSFile(selcetedFile.getName(), filepath, filetype, filesize);
-
         //MySQLDatabase.insert(model);
 
         fileChooser.setInitialFileName(selcetedFile.getName());
         File targetFolder = new File(filepath);
         fileChooser.setInitialDirectory(targetFolder);
-        if(targetFolder != null) {
+        if (targetFolder != null) {
             try {
                 Files.copy(selcetedFile.toPath(), targetFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
 
 
         //Path file = Paths.get(String.valueOf(selcetedFile));
