@@ -12,7 +12,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSFile;
 import model.Folder;
-import model.MySQLDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,32 +85,18 @@ public class FfsC {
     private void selectFile() throws IOException {
         Stage stage = (Stage) btDownload.getScene().getWindow();
         FileChooser fileChooser = new FileChooser(); //File
-        File selcetedFile = fileChooser.showOpenDialog(stage);
+        File selectedFile = fileChooser.showOpenDialog(stage);
 
-        String filesize = String.valueOf(selcetedFile.length() + " B");
-
-        String[] file = selcetedFile.getName().split("\\.");
+        String filesize = String.valueOf(selectedFile.length() + " B");
+        String[] file = selectedFile.getName().split("\\.");
         String filetype = file[1]; //File type
+        String filepath = sharedFolderPath + selectedFile.getName();
 
-        String filepath = sharedFolderPath + selcetedFile.getName();
-
-        model = new FSSFile(selcetedFile.getName(), filepath, filetype, filesize);
-        Folder.getInstance().saveFile(model);
-        //MySQLDatabase.insert(model);
-
-        fileChooser.setInitialFileName(selcetedFile.getName());
-        File targetFolder = new File(filepath);
-        fileChooser.setInitialDirectory(targetFolder);
-        if (targetFolder != null) {
-            try {
-                Files.copy(selcetedFile.toPath(), targetFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        save(selectedFile.getName(), filepath, filetype, filesize);
+        moveFile(fileChooser, selectedFile, filepath);
 
 
-        //Path file = Paths.get(String.valueOf(selcetedFile));
+        //Path file = Paths.get(String.valueOf(selectedFile));
         //BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
         //System.out.println(attr.creationTime());
 
@@ -125,7 +110,22 @@ public class FfsC {
 
     }
 
-    private void save() {
+    private void moveFile(FileChooser fileChooser, File selectedFile, String filepath) {
+        fileChooser.setInitialFileName(selectedFile.getName());
+        File targetFolder = new File(filepath);
+        fileChooser.setInitialDirectory(targetFolder);
+        if (targetFolder != null) {
+            try {
+                Files.copy(selectedFile.toPath(), targetFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    private void save(String filename, String filepath, String filetype, String filesize) {
+        model = new FSSFile(filename, filepath, filetype, filesize);
+        Folder.getInstance().saveFile(model);
+        //MySQLDatabase.insert(model);
     }
 }
