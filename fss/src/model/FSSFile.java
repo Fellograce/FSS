@@ -1,64 +1,54 @@
 package model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 import java.util.Objects;
 
 public class FSSFile {
-    private final StringProperty filename = new SimpleStringProperty();
-    private final StringProperty filepath = new SimpleStringProperty();
-    private final StringProperty filetype = new SimpleStringProperty();
-    private final StringProperty filesize = new SimpleStringProperty();
+    private String filename;
+    private String filepath;
+    private String filetype;
+    private String filesize;
 
-
-
-    public String getFilename() {
-        return filename.get();
+    public FSSFile() {
     }
 
-    public StringProperty filenameProperty() {
+    public FSSFile(String filename, String filepath, String filetype, String filesize) {
+        setFilename(filename);
+        setFilepath(filepath);
+        setFiletype(filetype);
+        setFilesize(filesize);
+    }
+
+    public String getFilename() {
         return filename;
     }
 
     public void setFilename(String filename) {
-        this.filename.set(filename);
+        this.filename = filename;
     }
 
     public String getFilepath() {
-        return filepath.get();
-    }
-
-    public StringProperty filepathProperty() {
         return filepath;
     }
 
     public void setFilepath(String filepath) {
-        this.filepath.set(filepath);
+        this.filepath = filepath;
     }
 
     public String getFiletype() {
-        return filetype.get();
-    }
-
-    public StringProperty filetypeProperty() {
         return filetype;
     }
 
     public void setFiletype(String filetype) {
-        this.filetype.set(filetype);
+        this.filetype = filetype;
     }
 
     public String getFilesize() {
-        return filesize.get();
-    }
-
-    public StringProperty filesizeProperty() {
         return filesize;
     }
 
     public void setFilesize(String filesize) {
-        this.filesize.set(filesize);
+        this.filesize = filesize;
     }
 
     @Override

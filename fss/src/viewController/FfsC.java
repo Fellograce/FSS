@@ -11,14 +11,10 @@ import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSFile;
+import model.MySQLDatabase;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.text.SimpleDateFormat;
 
 public class FfsC {
 
@@ -26,9 +22,11 @@ public class FfsC {
     private Button btDownload;
     @FXML
     private Button btUpload;
+
     @FXML
     void btDownloadOnAction(ActionEvent actionEvent) {
     }
+
     @FXML
     void btUploadOnAction(ActionEvent actionEvent) throws IOException {
         selectFile();
@@ -39,7 +37,9 @@ public class FfsC {
 
     private FSSFile model;
 
-    public static void show(Stage stage){
+    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
+
+    public static void show(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(FfsC.class.getResource("FfsV.fxml"));
             Parent root = loader.load();
@@ -48,13 +48,13 @@ public class FfsC {
             stage.setScene(scene);
             stage.setTitle("Best File Share System ever!");
             stage.show();
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
             Platform.exit();
         }
     }
 
-    public void initialize(){
+    public void initialize() {
 
     }
 
@@ -62,14 +62,22 @@ public class FfsC {
         Stage stage = (Stage) btDownload.getScene().getWindow();
         FileChooser fileChooser = new FileChooser(); //File
         File selcetedFile = fileChooser.showOpenDialog(stage);
-        System.out.println(selcetedFile.length());
-        String[] test = selcetedFile.getName().split("\\.");
-        System.out.println(test[0]); //File name
-        System.out.println(test[1]); //File type
 
-        Path file = Paths.get(String.valueOf(selcetedFile));
-        BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
-        System.out.println(attr.creationTime());
+        String filesize = String.valueOf(selcetedFile.length() + "B");
+
+        String[] file = selcetedFile.getName().split("\\.");
+        String filetype = file[1]; //File type
+
+        String filepath = sharedFolderPath + selcetedFile.getName();
+
+        model = new FSSFile(selcetedFile.getName(), filepath, filetype, filesize);
+
+        MySQLDatabase.insert(model);
+
+        //Path file = Paths.get(String.valueOf(selcetedFile));
+        //BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
+        //System.out.println(attr.creationTime());
+
 /*
 
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -77,6 +85,10 @@ public class FfsC {
 
         System.out.println(attr.size());
  */
+
+    }
+
+    private void save() {
 
     }
 }
