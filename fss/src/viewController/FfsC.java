@@ -39,6 +39,11 @@ public class FfsC {
 
     private FSSFile model;
 
+    private String filename;
+    private String filetype;
+    private String filesize;
+    private String filepath;
+
     private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
 
     public static void show(Stage stage) {
@@ -57,7 +62,22 @@ public class FfsC {
     }
 
     public void initialize() {
-
+        File dir = new File("C:\\Users\\alexa\\FSS\\fss\\files");
+        File[] directoryListing = dir.listFiles();
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                String[] test = child.getName().split("\\.");
+                System.out.println("Name:    "+child.getName());
+                System.out.println("Groesse: "+child.length() + "Bytes");
+                System.out.println("Filename: "+test[0]); //File name
+                System.out.println("Typname:  "+test[1]); //File type
+                System.out.println("--------------------------");
+                filename = test[0];
+                filepath = dir.getPath();
+                filetype = test[1];
+                filesize = String.valueOf(child.length());
+            }
+        }
     }
 
     private void selectFile() throws IOException {
