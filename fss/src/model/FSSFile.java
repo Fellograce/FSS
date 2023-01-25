@@ -1,9 +1,10 @@
 package model;
 
 
+
 import java.util.Objects;
 
-public class FSSFile {
+public class FSSFile  {
     private String filename;
     private String filepath;
     private String filetype;
@@ -66,6 +67,6 @@ public class FSSFile {
 
     @Override
     public String toString() {
-        return getFilename();
+        return filename;
     }
 }
