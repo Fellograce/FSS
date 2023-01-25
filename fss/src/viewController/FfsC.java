@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 public class FfsC {
 
@@ -85,15 +86,17 @@ public class FfsC {
     private void selectFile() throws IOException {
         Stage stage = (Stage) btDownload.getScene().getWindow();
         FileChooser fileChooser = new FileChooser(); //File
-        File selectedFile = fileChooser.showOpenDialog(stage);
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(stage);
 
-        String filesize = String.valueOf(selectedFile.length() + " B");
-        String[] file = selectedFile.getName().split("\\.");
-        String filetype = file[1]; //File type
-        String filepath = sharedFolderPath + selectedFile.getName();
+        for (File selectedFile : selectedFiles) {
+            String filesize = String.valueOf(selectedFile.length() + " B");
+            String[] file = selectedFile.getName().split("\\.");
+            String filetype = file[1]; //File type
+            String filepath = sharedFolderPath + selectedFile.getName();
 
-        save(selectedFile.getName(), filepath, filetype, filesize);
-        moveFile(fileChooser, selectedFile, filepath);
+            save(selectedFile.getName(), filepath, filetype, filesize);
+            moveFile(fileChooser, selectedFile, filepath);
+        }
 
 
         //Path file = Paths.get(String.valueOf(selectedFile));
