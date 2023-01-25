@@ -8,13 +8,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSFile;
 import model.Folder;
+import model.MySQLDatabase;
 
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -28,19 +32,22 @@ public class FfsC {
 
     @FXML
     void btDownloadOnAction(ActionEvent actionEvent) {
+        downloadFile();
     }
 
     @FXML
     void btUploadOnAction(ActionEvent actionEvent) throws IOException {
-        selectFile();
+        uploadFile();
     }
 
     @FXML
     private ListView<FSSFile> lvFile;
 
     private FSSFile model;
+    private DataInputStream dis;
 
     private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
+    private final String downloadFolderPath = System.getProperty("user.home") + "/Downloads/";
 
     public static void show(Stage stage) {
         try {
@@ -58,33 +65,11 @@ public class FfsC {
     }
 
     public void initialize() {
-        //Folder.getInstance().loadAllFiles();
         lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
-
-        /*
-        File dir = new File(sharedFolderPath);
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null) {
-            for (File child : directoryListing) {
-                String[] test = child.getName().split("\\.");
-
-                String filename = child.getName();
-                String filepath = child.getPath();
-                String filetype = test[1];
-                String filesize = String.valueOf(child.length() + " B");
-
-                model = new FSSFile(filename, filepath, filetype, filesize);
-
-                Folder.getInstance().saveFile(model);
-            }
-        }
-
-         */
-
     }
 
-    private void selectFile() throws IOException {
-        Stage stage = (Stage) btDownload.getScene().getWindow();
+    private void uploadFile() throws IOException {
+        Stage stage = (Stage) btUpload.getScene().getWindow();
         FileChooser fileChooser = new FileChooser(); //File
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(stage);
 
@@ -97,19 +82,21 @@ public class FfsC {
             save(selectedFile.getName(), filepath, filetype, filesize);
             moveFile(fileChooser, selectedFile, filepath);
         }
-
-
         //Path file = Paths.get(String.valueOf(selectedFile));
         //BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
         //System.out.println(attr.creationTime());
+    }
+    private void downloadFile() {
+        System.out.println(lvFile.getFocusModel().getFocusedItem().getFilename());
+        Stage stage = (Stage) btDownload.getScene().getWindow();
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setInitialDirectory(new File(downloadFolderPath));
+        File selectedDirectory = dc.showDialog(stage);
 
-/*
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        System.out.println(sdf.format(attr.creationTime()));
+        FileChooser fc = new FileChooser();
+        //List<File> selectedFiles = lvFile.getFocusModel().getFocusedItem();
 
-        System.out.println(attr.size());
- */
 
     }
 
@@ -129,6 +116,6 @@ public class FfsC {
     private void save(String filename, String filepath, String filetype, String filesize) {
         model = new FSSFile(filename, filepath, filetype, filesize);
         Folder.getInstance().saveFile(model);
-        //MySQLDatabase.insert(model);
+        MySQLDatabase.insert(model);
     }
 }
