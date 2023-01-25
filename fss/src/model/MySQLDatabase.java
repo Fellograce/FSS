@@ -9,7 +9,7 @@ public class MySQLDatabase {
 
 
     /**
-     * Put file data into the MySql Database
+     * Insert data into the MySql Database
      *
      * @param fssFile File
      */
