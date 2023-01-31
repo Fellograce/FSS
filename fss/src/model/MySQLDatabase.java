@@ -15,7 +15,7 @@ public class MySQLDatabase {
      */
     public static void insert(FSSFile fssFile) throws FSSException {
         if (check(fssFile)) {
-            throw new FSSException("Filename already exist, please change the filename");
+            throw new FSSException("File " + fssFile.getFilename() + " already exist, please change the filename");
         }
         try (Connection c = DriverManager.getConnection(url, user, password)) {
             String sql = "INSERT INTO file (name, type, path, size) VALUES (?,?,?,?)";

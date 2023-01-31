@@ -1,6 +1,7 @@
 package viewController;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSException;
@@ -21,7 +23,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
 public class FfsC {
 
@@ -65,6 +74,7 @@ public class FfsC {
 
     public void initialize() {
         lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
+        lvFile.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private void uploadFile() throws IOException {
@@ -90,15 +100,29 @@ public class FfsC {
     }
 
     private void downloadFile() {
-        String filePath = sharedFolderPath + lvFile.getFocusModel().getFocusedItem().getFilename();
-        File source = new File(filePath);
-        System.out.println(filePath);
-        File dest = new File(downloadFolderPath);
-        System.out.println(downloadFolderPath);
-        try {
-            FileUtils.copyFileToDirectory(source, dest);
-        } catch (IOException e) {
-            e.printStackTrace();
+        ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
+        for (FSSFile fssFile : fileList) {
+            File source = new File(fssFile.getFilepath());
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Date date = new Date();
+
+            try {
+                date = formatter.parse(formatter.format(date));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            source.setLastModified(date.getTime());
+
+            System.out.println(fssFile.getFilepath());
+            File dest = new File(downloadFolderPath);
+            System.out.println(downloadFolderPath);
+            try {
+                FileUtils.copyFileToDirectory(source, dest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
