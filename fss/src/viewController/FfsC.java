@@ -17,6 +17,7 @@ import model.FSSException;
 import model.FSSFile;
 import model.Folder;
 import model.MySQLDatabase;
+// Apache Commons IO library for IO functionalitys
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -74,12 +75,16 @@ public class FfsC {
     }
 
     /**
-     * Uploads a File from your computer to the shared file
+     * Uploads the selected files from your computer to the shared file directory.
+     * If the uploadbutton is pressed, a window opens where the user can select files he wants to upload.
+     * After selecting the files and pressing the "open" button, the filename, filepath, filetype and filesize
+     * will be saved on the Database, and the file will be copied to the shared folder.
+     *
      * @throws IOException
      */
     private void uploadFile() throws IOException {
         Stage stage = (Stage) btUpload.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser(); //File
+        FileChooser fileChooser = new FileChooser();
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(stage);
         if (selectedFiles == null) {
             return;
@@ -94,13 +99,13 @@ public class FfsC {
             save(selectedFile.getName(), filepath, filetype, filesize);
             moveFile(fileChooser, selectedFile, filepath);
         }
-        //Path file = Paths.get(String.valueOf(selectedFile));
-        //BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
-        //System.out.println(attr.creationTime());
     }
 
     /**
-     * Copies the selected ListView items to your computers Download directory
+     * Copies the selected ListView-Items to your computers Download directory.
+     * The selected items in the ListView are getting their date formatted to their
+     * last modified date and then copied to the Download folder.
+     *
      */
     private void downloadFile() {
         ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
@@ -117,10 +122,7 @@ public class FfsC {
             }
 
             source.setLastModified(date.getTime());
-
-            System.out.println(fssFile.getFilepath());
             File dest = new File(downloadFolderPath);
-            System.out.println(downloadFolderPath);
             try {
                 FileUtils.copyFileToDirectory(source, dest);
             } catch (IOException e) {
@@ -128,6 +130,13 @@ public class FfsC {
             }
         }
     }
+
+    /**
+     * The chosen file
+     * @param fileChooser
+     * @param selectedFile
+     * @param filepath
+     */
     private void moveFile(FileChooser fileChooser, File selectedFile, String filepath) {
         fileChooser.setInitialFileName(selectedFile.getName());
         File targetFolder = new File(filepath);
@@ -142,7 +151,7 @@ public class FfsC {
     }
 
     /**
-     * saves the filename, filepath, filetype and filesize in the Database
+     * Saves the filename, filepath, filetype and filesize into the Database.
      * @param filename
      * @param filepath
      * @param filetype
