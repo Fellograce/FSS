@@ -2,6 +2,15 @@ package model;
 
 import java.sql.*;
 
+/**
+ * A MySql database is being used to store different data of a file.
+ * For now the database consist 1 table named 'file' with 4 columns:
+ *      name varchar(255) primary key,
+ *      type varchar(10),
+ *      path varchar(255),
+ *      size varchar(30)
+ *
+ */
 public class MySQLDatabase {
     private static final String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11591230";
     private static final String user = "sql11591230";
@@ -11,12 +20,15 @@ public class MySQLDatabase {
     /**
      * Insert data into the MySql Database
      *
-     * @param fssFile File
+     * @param fssFile fssFile
      */
     public static void insert(FSSFile fssFile) throws FSSException {
+        //Checks if the same filename already exist in the database.
+        //  if true --> an Exception gets thrown
         if (check(fssFile)) {
             throw new FSSException("File " + fssFile.getFilename() + " already exist, please change the filename");
         }
+
         try (Connection c = DriverManager.getConnection(url, user, password)) {
             String sql = "INSERT INTO file (name, type, path, size) VALUES (?,?,?,?)";
             PreparedStatement pstmt = c.prepareStatement(sql);
@@ -33,9 +45,9 @@ public class MySQLDatabase {
     }
 
     /**
-     * Checks if file already exist in the database
+     * Checks if the filename already exist in the database
      * @param fssFile
-     * @return
+     * @return exist
      */
     private static boolean check(FSSFile fssFile) {
         boolean exist = false;
@@ -44,8 +56,12 @@ public class MySQLDatabase {
             Statement st = c.createStatement();
             ResultSet result = st.executeQuery(sql);
             if (result.next()) {
+                //If result has a next line means that the filename already exist in the database.
                 exist = true;
             } else exist = false;
+
+            st.close();
+            result.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
