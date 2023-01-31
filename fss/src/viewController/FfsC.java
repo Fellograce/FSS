@@ -132,7 +132,11 @@ public class FfsC {
     }
 
     /**
-     * The chosen file
+     * The chosen file is getting moved to an already set folder.
+     * The FileName is already initialized with the selected file name.
+     * The FilePath is already initialized with the path of the target folder (the shared folder).
+     * To avoid errors, the file can only be copied if the target folder is not null.
+     * How to use the copy command: 'Files.copy(fromPath, toPath, options);'
      * @param fileChooser
      * @param selectedFile
      * @param filepath
