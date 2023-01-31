@@ -151,7 +151,7 @@ public class FfsC {
     }
 
     /**
-     * Saves the filename, filepath, filetype and filesize into the Database.
+     * Saves the filename, filepath, filetype and filesize into the database and gets added to the folder list.
      * @param filename
      * @param filepath
      * @param filetype
@@ -167,6 +167,10 @@ public class FfsC {
         }
     }
 
+    /**
+     * An error popup window will appear to the user to notify him what went wrong and what he has to change/do.
+     * @param s
+     */
     private void error(String s) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
