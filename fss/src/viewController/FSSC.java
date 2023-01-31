@@ -61,7 +61,7 @@ public class FSSC {
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("Best File Share System ever!");
+            stage.setTitle("File Share System");
             stage.show();
         } catch (IOException ex) {
             ex.printStackTrace();
