@@ -151,7 +151,7 @@ public class FfsC {
     }
 
     /**
-     * Saves the filename, filepath, filetype and filesize in the Database.
+     * Saves the filename, filepath, filetype and filesize into the Database.
      * @param filename
      * @param filepath
      * @param filetype
