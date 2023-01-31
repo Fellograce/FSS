@@ -31,6 +31,12 @@ public class MySQLDatabase {
 
         try (Connection c = DriverManager.getConnection(url, user, password)) {
             String sql = "INSERT INTO file (name, type, path, size) VALUES (?,?,?,?)";
+
+            //A PreparedStatement is being used explicit for the filepath.
+            //  Filepath contains multiple backslashes and the backslahes get ignored
+            //  with using the 'normal' Statement.
+            //  With the help of PreparedStatement the backslashes will not get
+            //  ignored during the insertion.
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, fssFile.getFilename());
             pstmt.setString(2, fssFile.getFiletype());
