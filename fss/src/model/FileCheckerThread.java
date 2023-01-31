@@ -10,7 +10,7 @@ import java.nio.file.*;
  * FileCheckerThread checks if an user added a file to the shared folder.
  */
 public class FileCheckerThread extends Thread {
-    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
+    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\fss\\files\\";
 
     /**
      * Checks if a file was added to the shared folder and gets added to the Folder list by the JavaFX Application Thread
