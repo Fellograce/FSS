@@ -18,7 +18,7 @@ public class Folder {
     private ObservableList<FSSFile> observableList = FXCollections.observableList(new LinkedList<>());
     private ListProperty<FSSFile> folder = new SimpleListProperty<>(observableList);
     private static Folder instance;
-    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
+    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\fss\\files\\";
 
     /**
      * Getter for folder list

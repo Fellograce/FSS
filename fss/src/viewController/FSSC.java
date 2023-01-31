@@ -51,7 +51,7 @@ public class FSSC {
 
     private FSSFile model;
 
-    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
+    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\fss\\files\\";
     private final String downloadFolderPath = System.getProperty("user.home") + "/Downloads/";
 
     public static void show(Stage stage) {
