@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.FileCheckerThread;
 import model.Folder;
-import viewController.FfsC;
+import viewController.FSSC;
 
 /**
  * Main
@@ -47,6 +47,6 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        FfsC.show(stage);
+        FSSC.show(stage);
     }
 }

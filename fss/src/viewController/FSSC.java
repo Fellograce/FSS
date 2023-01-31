@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class FfsC {
+public class FSSC {
 
     @FXML
     private Button btDownload;
@@ -56,7 +56,7 @@ public class FfsC {
 
     public static void show(Stage stage) {
         try {
-            FXMLLoader loader = new FXMLLoader(FfsC.class.getResource("FfsV.fxml"));
+            FXMLLoader loader = new FXMLLoader(FSSC.class.getResource("FSSV.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
