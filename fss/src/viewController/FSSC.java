@@ -77,7 +77,7 @@ public class FSSC {
     /**
      * Uploads the selected files from your computer to the shared file directory.
      * If the uploadbutton is pressed, a window opens where the user can select files he wants to upload.
-     * After selecting the files and pressing the "open" button, the filename, filepath, filetype and filesize
+     * After selecting the files and pressing the 'open' button, the filename, filepath, filetype and filesize
      * will be saved on the Database, and the file will be copied to the shared folder.
      *
      * @throws IOException
@@ -102,9 +102,12 @@ public class FSSC {
     }
 
     /**
-     * Copies the selected ListView-Items to your computers Download directory.
+     * Copies the selected ListView-Items to your computer's Download directory.
      * The selected items in the ListView are getting their date formatted to their
      * last modified date and then copied to the Download folder.
+     * With the added library 'org.apache.commons.io.FileUtils' the copying of the file
+     * is very simple.
+     * Command for copying a file to a directory: 'FileUtils.copyFileToDirectory(source, destination);'
      *
      */
     private void downloadFile() {
