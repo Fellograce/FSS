@@ -25,7 +25,7 @@
       </VBox>
       <ListView prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" fx:id="lvFile">
          <HBox.margin>
-            <Insets />
+
          </HBox.margin></ListView>
    </children>
 </HBox>

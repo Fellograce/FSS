@@ -13,7 +13,10 @@ public class MySQLDatabase {
      *
      * @param fssFile File
      */
-    public static void insert(FSSFile fssFile) {
+    public static void insert(FSSFile fssFile) throws FSSException {
+        if (check(fssFile)) {
+            throw new FSSException("Filename already exist, please change the filename");
+        }
         try (Connection c = DriverManager.getConnection(url, user, password)) {
             String sql = "INSERT INTO file (name, type, path, size) VALUES (?,?,?,?)";
             PreparedStatement pstmt = c.prepareStatement(sql);
@@ -22,9 +25,25 @@ public class MySQLDatabase {
             pstmt.setString(3, fssFile.getFilepath());
             pstmt.setString(4, fssFile.getFilesize());
             pstmt.executeUpdate();
+            pstmt.close();
             System.out.println("Inserted datas to the database");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private static boolean check(FSSFile fssFile) {
+        boolean exist = false;
+        try (Connection c = DriverManager.getConnection(url, user, password)) {
+            String sql = "SELECT name FROM file where name like " + "'" + fssFile.getFilename() + "'";
+            Statement st = c.createStatement();
+            ResultSet result = st.executeQuery(sql);
+            if (result.next()) {
+                exist = true;
+            } else exist = false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exist;
     }
 }

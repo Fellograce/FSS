@@ -6,10 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.FSSException;
 import model.FSSFile;
 import model.Folder;
 import model.MySQLDatabase;
@@ -69,6 +71,9 @@ public class FfsC {
         Stage stage = (Stage) btUpload.getScene().getWindow();
         FileChooser fileChooser = new FileChooser(); //File
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(stage);
+        if (selectedFiles == null) {
+            return;
+        }
 
         for (File selectedFile : selectedFiles) {
             String filesize = String.valueOf(selectedFile.length() + " B");
@@ -83,8 +88,9 @@ public class FfsC {
         //BasicFileAttributes attr = Files.readAttributes(file ,BasicFileAttributes.class);
         //System.out.println(attr.creationTime());
     }
+
     private void downloadFile() {
-        String filePath = sharedFolderPath+lvFile.getFocusModel().getFocusedItem().getFilename();
+        String filePath = sharedFolderPath + lvFile.getFocusModel().getFocusedItem().getFilename();
         File source = new File(filePath);
         System.out.println(filePath);
         File dest = new File(downloadFolderPath);
@@ -110,8 +116,19 @@ public class FfsC {
     }
 
     private void save(String filename, String filepath, String filetype, String filesize) {
-        model = new FSSFile(filename, filepath, filetype, filesize);
-        Folder.getInstance().saveFile(model);
-        MySQLDatabase.insert(model);
+        try {
+            model = new FSSFile(filename, filepath, filetype, filesize);
+            MySQLDatabase.insert(model);
+            Folder.getInstance().saveFile(model);
+        } catch (FSSException e) {
+            error(e.getMessage());
+        }
+    }
+
+    private void error(String s) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText(s);
+        alert.showAndWait();
     }
 }
