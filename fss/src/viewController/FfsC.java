@@ -8,17 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSFile;
 import model.Folder;
 import model.MySQLDatabase;
+import org.apache.commons.io.FileUtils;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -44,7 +42,6 @@ public class FfsC {
     private ListView<FSSFile> lvFile;
 
     private FSSFile model;
-    private DataInputStream dis;
 
     private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\ffs\\files\\";
     private final String downloadFolderPath = System.getProperty("user.home") + "/Downloads/";
@@ -87,17 +84,16 @@ public class FfsC {
         //System.out.println(attr.creationTime());
     }
     private void downloadFile() {
-        System.out.println(lvFile.getFocusModel().getFocusedItem().getFilename());
-        Stage stage = (Stage) btDownload.getScene().getWindow();
-        DirectoryChooser dc = new DirectoryChooser();
-        dc.setInitialDirectory(new File(downloadFolderPath));
-        File selectedDirectory = dc.showDialog(stage);
-
-
-        FileChooser fc = new FileChooser();
-        //List<File> selectedFiles = lvFile.getFocusModel().getFocusedItem();
-
-
+        String filePath = sharedFolderPath+lvFile.getFocusModel().getFocusedItem().getFilename();
+        File source = new File(filePath);
+        System.out.println(filePath);
+        File dest = new File(downloadFolderPath);
+        System.out.println(downloadFolderPath);
+        try {
+            FileUtils.copyFileToDirectory(source, dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void moveFile(FileChooser fileChooser, File selectedFile, String filepath) {
