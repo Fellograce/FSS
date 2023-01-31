@@ -100,7 +100,7 @@ public class FfsC {
     }
 
     /**
-     * Copies the selected files from the ListView to your computers Download directory
+     * Copies the selected ListView items to your computers Download directory
      */
     private void downloadFile() {
         ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
