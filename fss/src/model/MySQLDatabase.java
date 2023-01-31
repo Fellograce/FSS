@@ -32,6 +32,11 @@ public class MySQLDatabase {
         }
     }
 
+    /**
+     * Checks if file already exist in the database
+     * @param fssFile
+     * @return
+     */
     private static boolean check(FSSFile fssFile) {
         boolean exist = false;
         try (Connection c = DriverManager.getConnection(url, user, password)) {
