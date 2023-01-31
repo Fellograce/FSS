@@ -23,14 +23,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.FileTime;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 
 public class FfsC {
 
@@ -77,6 +73,10 @@ public class FfsC {
         lvFile.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
+    /**
+     * Uploads a File from your computer to the shared file
+     * @throws IOException
+     */
     private void uploadFile() throws IOException {
         Stage stage = (Stage) btUpload.getScene().getWindow();
         FileChooser fileChooser = new FileChooser(); //File
@@ -99,6 +99,9 @@ public class FfsC {
         //System.out.println(attr.creationTime());
     }
 
+    /**
+     * Copies the selected ListView items to your computers Download directory
+     */
     private void downloadFile() {
         ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
         for (FSSFile fssFile : fileList) {
@@ -125,7 +128,6 @@ public class FfsC {
             }
         }
     }
-
     private void moveFile(FileChooser fileChooser, File selectedFile, String filepath) {
         fileChooser.setInitialFileName(selectedFile.getName());
         File targetFolder = new File(filepath);
@@ -139,6 +141,13 @@ public class FfsC {
         }
     }
 
+    /**
+     * saves the filename, filepath, filetype and filesize in the Database
+     * @param filename
+     * @param filepath
+     * @param filetype
+     * @param filesize
+     */
     private void save(String filename, String filepath, String filetype, String filesize) {
         try {
             model = new FSSFile(filename, filepath, filetype, filesize);
