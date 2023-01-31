@@ -99,7 +99,7 @@ public class FSSFile {
     }
 
     /**
-     * Equals method to check if filenames are equal
+     * Overrides equals method to check if filenames are equal
      * @param o
      * @return
      */
