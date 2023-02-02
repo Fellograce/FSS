@@ -29,6 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * GUI Controller
+ */
 public class FSSC {
 
     @FXML
@@ -69,6 +72,10 @@ public class FSSC {
         }
     }
 
+    /**
+     * The Initialize-Method is used to bind the ListView with the ListProperty in Folder class.
+     * 
+     */
     public void initialize() {
         lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
         lvFile.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
