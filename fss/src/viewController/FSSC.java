@@ -17,7 +17,6 @@ import model.FSSException;
 import model.FSSFile;
 import model.Folder;
 import model.MySQLDatabase;
-// Apache Commons IO library for IO functionalitys
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -74,7 +73,6 @@ public class FSSC {
 
     /**
      * The Initialize-Method is used to bind the ListView with the ListProperty in Folder class.
-     * 
      */
     public void initialize() {
         lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
@@ -82,10 +80,10 @@ public class FSSC {
     }
 
     /**
-     * Uploads the selected files from your computer to the shared file directory.
-     * If the uploadbutton is pressed, a window opens where the user can select files he wants to upload.
-     * After selecting the files and pressing the 'open' button, the filename, filepath, filetype and filesize
-     * will be saved on the Database, and the file will be copied to the shared folder.
+     * Uploads the selected files from your computer to the shared file directory. If the uploadbutton is pressed, a
+     * window opens where the user can select files he wants to upload. After selecting the files and pressing the
+     * 'open' button, the filename, filepath, filetype and filesize will be saved on the Database, and the file will be
+     * copied to the shared folder.
      *
      * @throws IOException
      */
@@ -100,7 +98,7 @@ public class FSSC {
         for (File selectedFile : selectedFiles) {
             String filesize = String.valueOf(selectedFile.length() + " B");
             String[] file = selectedFile.getName().split("\\.");
-            String filetype = file[1]; //File type
+            String filetype = file[file.length - 1]; //File type
             String filepath = sharedFolderPath + selectedFile.getName();
 
             save(selectedFile.getName(), filepath, filetype, filesize);
@@ -109,13 +107,10 @@ public class FSSC {
     }
 
     /**
-     * Copies the selected ListView-Items to your computer's Download directory.
-     * The selected items in the ListView are getting their date formatted to their
-     * last modified date and then copied to the Download folder.
-     * With the added library 'org.apache.commons.io.FileUtils' the copying of the file
-     * is very simple.
-     * Command for copying a file to a directory: 'FileUtils.copyFileToDirectory(source, destination);'
-     *
+     * Copies the selected ListView-Items to your computer's Download directory. The selected items in the ListView are
+     * getting their date formatted to their last modified date and then copied to the Download folder. With the added
+     * library 'org.apache.commons.io.FileUtils' the copying of the file is very simple. Command for copying a file to a
+     * directory: 'FileUtils.copyFileToDirectory(source, destination);'
      */
     private void downloadFile() {
         ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
@@ -142,11 +137,11 @@ public class FSSC {
     }
 
     /**
-     * The chosen file is getting moved to an already set folder.
-     * The FileName is already initialized with the selected file name.
-     * The FilePath is already initialized with the path of the target folder (the shared folder).
-     * To avoid errors, the file can only be copied if the target folder is not null.
-     * How to use the copy command: 'Files.copy(fromPath, toPath, options);'
+     * The chosen file is getting moved to an already set folder. The FileName is already initialized with the selected
+     * file name. The FilePath is already initialized with the path of the target folder (the shared folder). To avoid
+     * errors, the file can only be copied if the target folder is not null. How to use the copy command:
+     * 'Files.copy(fromPath, toPath, options);'
+     *
      * @param fileChooser
      * @param selectedFile
      * @param filepath
@@ -166,6 +161,7 @@ public class FSSC {
 
     /**
      * Saves the filename, filepath, filetype and filesize into the database and gets added to the folder list.
+     *
      * @param filename
      * @param filepath
      * @param filetype
@@ -183,6 +179,7 @@ public class FSSC {
 
     /**
      * An error popup window will appear to the user to notify him what went wrong and what he has to change/do.
+     *
      * @param s
      */
     private void error(String s) {
