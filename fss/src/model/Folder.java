@@ -86,17 +86,17 @@ public class Folder {
                 //Every folder that has a picture in it includes a hidden file called 'Thumbs.db'.
                 // The if-statement exclude this specific file.
                 if (!child.getName().equals("Thumbs.db")) {
-                    String[] test = child.getName().split("\\.");
+                    String[] file = child.getName().split("\\.");
 
                     String filename = child.getName();
                     String filepath = child.getPath();
-                    String filetype = test[1];
+                    String filetype = file[file.length - 1];
                     String filesize = String.valueOf(child.length() + " B");
 
-                    FSSFile file = new FSSFile(filename, filepath, filetype, filesize);
-                    System.out.println(file);
+                    FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize);
+                    System.out.println(fssFile);
 
-                    folder.add(file);
+                    folder.add(fssFile);
                 }
             }
         }

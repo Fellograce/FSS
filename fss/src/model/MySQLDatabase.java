@@ -52,7 +52,7 @@ public class MySQLDatabase {
 
     /**
      * Checks if the filename already exist in the database
-     * @param fssFile
+     * @param fssFile fssFile
      * @return exist
      */
     private static boolean check(FSSFile fssFile) {

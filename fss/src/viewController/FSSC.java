@@ -73,6 +73,7 @@ public class FSSC {
 
     /**
      * The Initialize-Method is used to bind the ListView with the ListProperty in Folder class.
+     * And set the selection mode of the ListView to "multiple".
      */
     public void initialize() {
         lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
@@ -98,6 +99,8 @@ public class FSSC {
         for (File selectedFile : selectedFiles) {
             String filesize = String.valueOf(selectedFile.length() + " B");
             String[] file = selectedFile.getName().split("\\.");
+
+            // "file.length - 1" to ensure to get the filetype because the file can have more than more dots.
             String filetype = file[file.length - 1]; //File type
             String filepath = sharedFolderPath + selectedFile.getName();
 
@@ -162,10 +165,10 @@ public class FSSC {
     /**
      * Saves the filename, filepath, filetype and filesize into the database and gets added to the folder list.
      *
-     * @param filename
-     * @param filepath
-     * @param filetype
-     * @param filesize
+     * @param filename filename
+     * @param filepath filepath
+     * @param filetype filetype
+     * @param filesize filesize
      */
     private void save(String filename, String filepath, String filetype, String filesize) {
         try {
@@ -180,12 +183,10 @@ public class FSSC {
     /**
      * An error popup window will appear to the user to notify him what went wrong and what he has to change/do.
      *
-     * @param s
+     * @param msg Error-Message
      */
-    private void error(String s) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setContentText(s);
+    private void error(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, msg);
         alert.showAndWait();
     }
 }
