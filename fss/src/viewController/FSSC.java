@@ -132,8 +132,7 @@ public class FSSC {
             source.setLastModified(date.getTime());
             File dest = new File(downloadFolderPath);
             try {
-                //FileUtils.copyFileToDirectory(source, dest);
-                Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                FileUtils.copyFileToDirectory(source, dest);
             } catch (IOException e) {
                 e.printStackTrace();
             }
