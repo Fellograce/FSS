@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import model.FSSException;
 import model.FSSFile;
 import model.Folder;
-import model.MySQLDatabase;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
