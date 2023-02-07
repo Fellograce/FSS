@@ -91,7 +91,7 @@ public class Folder {
                     String filename = child.getName();
                     String filepath = child.getPath();
                     String filetype = file[file.length - 1];
-                    String filesize = String.valueOf(child.length() + " B");
+                    String filesize = child.length() + " B";
 
                     FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize);
                     System.out.println(fssFile);
