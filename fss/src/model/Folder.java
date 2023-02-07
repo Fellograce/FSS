@@ -83,7 +83,7 @@ public class Folder {
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
-                //Every folder that has a picture in it includes a hidden file called 'Thumbs.db'.
+                //Every folder, that has a picture in it, includes a hidden file called 'Thumbs.db'.
                 // The if-statement exclude this specific file.
                 if (!child.getName().equals("Thumbs.db")) {
                     String[] file = child.getName().split("\\.");
