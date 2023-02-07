@@ -22,7 +22,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,8 +71,8 @@ public class FSSC {
     }
 
     /**
-     * The Initialize-Method is used to bind the ListView with the ListProperty in Folder class.
-     * And set the selection mode of the ListView to "multiple".
+     * The Initialize-Method is used to bind the ListView with the ListProperty in Folder class. And set the selection
+     * mode of the ListView to "multiple".
      */
     public void initialize() {
         lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
@@ -104,8 +103,12 @@ public class FSSC {
             String filetype = file[file.length - 1]; //File type
             String filepath = sharedFolderPath + selectedFile.getName();
 
-            save(selectedFile.getName(), filepath, filetype, filesize);
-            moveFile(fileChooser, selectedFile, filepath);
+            try {
+                save(selectedFile.getName(), filepath, filetype, filesize);
+                moveFile(fileChooser, selectedFile, filepath);
+            } catch (FSSException e) {
+                error(e.getMessage());
+            }
         }
     }
 
@@ -155,7 +158,7 @@ public class FSSC {
         fileChooser.setInitialDirectory(targetFolder);
         if (targetFolder != null) {
             try {
-                Files.copy(selectedFile.toPath(), targetFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(selectedFile.toPath(), targetFolder.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -170,14 +173,10 @@ public class FSSC {
      * @param filetype filetype
      * @param filesize filesize
      */
-    private void save(String filename, String filepath, String filetype, String filesize) {
-        try {
-            model = new FSSFile(filename, filepath, filetype, filesize);
-            MySQLDatabase.insert(model);
-            Folder.getInstance().saveFile(model);
-        } catch (FSSException e) {
-            error(e.getMessage());
-        }
+    private void save(String filename, String filepath, String filetype, String filesize) throws FSSException {
+        model = new FSSFile(filename, filepath, filetype, filesize);
+        MySQLDatabase.insert(model);
+        model.save();
     }
 
     /**

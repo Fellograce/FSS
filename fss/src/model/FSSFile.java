@@ -124,4 +124,11 @@ public class FSSFile {
     public String toString() {
         return filename;
     }
+
+    /**
+     * Saves FSSFile into the folder list.
+     */
+    public void save() {
+        Folder.getInstance().saveFile(this);
+    }
 }
