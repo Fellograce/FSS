@@ -58,7 +58,7 @@ public class MySQLDatabase {
     private static boolean check(FSSFile fssFile) {
         boolean exist = false;
         try (Connection c = DriverManager.getConnection(url, user, password)) {
-            String sql = "SELECT name FROM file where name like " + "'" + fssFile.getFilename() + "'";
+            String sql = "SELECT name FROM file where name like '" + fssFile.getFilename() + "'";
             Statement st = c.createStatement();
             ResultSet result = st.executeQuery(sql);
             if (result.next()) {
