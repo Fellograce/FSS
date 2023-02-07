@@ -45,6 +45,7 @@ public class FileCheckerThread extends Thread {
                         });
                     }
                 }
+                //reset WatchKey --> puts key into ready state
                 key.reset();
             }
         } catch (IOException e) {
