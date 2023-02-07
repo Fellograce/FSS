@@ -128,9 +128,10 @@ public class FSSFile {
     }
 
     /**
-     * Saves FSSFile into the folder list.
+     * Saves FSSFile into the folder list and into the database
      */
-    public void save() {
+    public void save() throws FSSException {
+        MySQLDatabase.insert(this);
         Folder.getInstance().saveFile(this);
     }
 }
