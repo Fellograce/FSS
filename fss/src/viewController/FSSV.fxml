@@ -6,24 +6,23 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="viewController.FSSC">
+<HBox prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2A363F;" stylesheets="@fssStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewController.FSSC">
    <children>
-      <VBox prefHeight="400.0" prefWidth="132.8">
+      <VBox prefHeight="400.0" prefWidth="156.0">
          <children>
-            <Button ellipsisString="" text="Herunterladen" VBox.vgrow="ALWAYS" fx:id="btDownload" onAction="#btDownloadOnAction">
+            <Button fx:id="btDownload" ellipsisString="" onAction="#btDownloadOnAction" text="Herunterladen" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
             </Button>
-            <Button prefHeight="25.0" prefWidth="99.0" text="Hochladen" fx:id="btUpload" onAction="#btUploadOnAction">
+            <Button fx:id="btUpload" onAction="#btUploadOnAction" prefHeight="31.0" prefWidth="123.0" text="Hochladen">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
             </Button>
          </children>
       </VBox>
-      <ListView prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" fx:id="lvFile">
+      <ListView fx:id="lvFile" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2A363F;" HBox.hgrow="ALWAYS">
          <HBox.margin>
 
          </HBox.margin></ListView>

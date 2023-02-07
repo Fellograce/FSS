@@ -1,0 +1,23 @@
+Button {
+    -fx-background-color: #50a176;
+    -fx-border-radius: 4px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+}
+
+Button:hover {
+    -fx-background-color: #59b383;
+}
+
+Button:pressed {
+    -fx-background-color: #50a176;
+}
+
+.list-cell {
+    -fx-font-size: 13px;
+    -fx-background-color: #d3d3d3;
+}
+
+.list-cell:selected {
+    -fx-background-color: #0096c9;
+}
