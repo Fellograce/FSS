@@ -123,6 +123,14 @@ public class FSSC {
         for (FSSFile fssFile : fileList) {
             File source = new File(fssFile.getFilepath());
 
+            File dest = new File(downloadFolderPath);
+            try {
+                FileUtils.copyFileToDirectory(source, dest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Change date of the downloaded file in order the file to show up on top of the download directory.
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             Date date = new Date();
 
@@ -132,13 +140,8 @@ public class FSSC {
                 throw new RuntimeException(e);
             }
 
-            source.setLastModified(date.getTime());
-            File dest = new File(downloadFolderPath);
-            try {
-                FileUtils.copyFileToDirectory(source, dest);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            dest = new File(downloadFolderPath + source.getName());
+            dest.setLastModified(date.getTime());
         }
     }
 
