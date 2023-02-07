@@ -14,7 +14,7 @@ Button:pressed {
 }
 
 .list-cell {
-    -fx-font-size: 13px;
+    -fx-font-size: 15px;
     -fx-background-color: #d3d3d3;
 }
 
