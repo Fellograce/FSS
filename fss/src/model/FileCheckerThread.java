@@ -18,41 +18,39 @@ public class FileCheckerThread extends Thread {
      */
     @Override
     public void run() {
-        while (!isInterrupted()) {
-            try {
-                WatchService watchService = FileSystems.getDefault().newWatchService();
-                Path folder = Paths.get(sharedFolderPath);
+        try {
+            WatchService watchService = FileSystems.getDefault().newWatchService();
+            Path folder = Paths.get(sharedFolderPath);
 
-                //Set folder to be monitored by the watchService
-                folder.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
-                while (true) {
-                    //Thread waits till new files appeared in the folder
-                    WatchKey key = watchService.take();
+            //Set folder to be monitored by the watchService
+            folder.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
+            while (!isInterrupted()) {
+                //Thread waits till new files appeared in the folder
+                WatchKey key = watchService.take();
 
-                    for (WatchEvent<?> event : key.pollEvents()) {
-                        if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
-                            String fileName = event.context().toString();
-                            File file = new File(sharedFolderPath + fileName);
-                            // update the UI on the JavaFX Application Thread
-                            Platform.runLater(() -> {
-                                String filesize = String.valueOf(file.length() + " B");
-                                String[] fileArray = file.getName().split("\\.");
-                                String filetype = fileArray[fileArray.length - 1]; //File type
-                                String filepath = sharedFolderPath + file.getName();
+                for (WatchEvent<?> event : key.pollEvents()) {
+                    if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
+                        String fileName = event.context().toString();
+                        File file = new File(sharedFolderPath + fileName);
+                        // update the UI on the JavaFX Application Thread
+                        Platform.runLater(() -> {
+                            String filesize = String.valueOf(file.length() + " B");
+                            String[] fileArray = file.getName().split("\\.");
+                            String filetype = fileArray[fileArray.length - 1]; //File type
+                            String filepath = sharedFolderPath + file.getName();
 
-                                FSSFile fssFile = new FSSFile(file.getName(), filepath, filetype, filesize);
-                                //Adds to the list
-                                Folder.getInstance().saveFile(fssFile);
-                            });
-                        }
+                            FSSFile fssFile = new FSSFile(file.getName(), filepath, filetype, filesize);
+                            //Adds to the list
+                            Folder.getInstance().saveFile(fssFile);
+                        });
                     }
-                    key.reset();
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                interrupt();
+                key.reset();
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            interrupt();
         }
     }
 }
