@@ -178,7 +178,6 @@ public class FSSC {
      */
     private void save(String filename, String filepath, String filetype, String filesize) throws FSSException {
         model = new FSSFile(filename, filepath, filetype, filesize);
-        MySQLDatabase.insert(model);
         model.save();
     }
 
