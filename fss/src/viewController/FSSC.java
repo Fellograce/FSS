@@ -58,7 +58,7 @@ public class FSSC {
     private TableColumn<FSSFile, String> tcType;
 
     @FXML
-    private TableColumn<FSSFile, String> tcDate;
+    private TableColumn<FSSFile, LocalDate> tcDate;
 
     @FXML
     private TableColumn<FSSFile, Integer> tcSize;
