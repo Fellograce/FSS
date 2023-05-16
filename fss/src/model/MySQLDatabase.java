@@ -12,7 +12,7 @@ import java.sql.*;
  *
  */
 public class MySQLDatabase {
-    private static final String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql7618672";
+    private static final String url = "jdbc:mysql://sql7.freesqldatabase.com:3306/sql7618672";
     private static final String user = "sql7618672";
     private static final String password = "sEU846nqBK";
 
