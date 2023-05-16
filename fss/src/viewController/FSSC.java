@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -125,8 +128,11 @@ public class FSSC {
             String filetype = file[file.length - 1]; //File type
             String filepath = sharedFolderPath + selectedFile.getName();
 
+            long date = selectedFile.lastModified();
+            LocalDate localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate();
+
             try {
-                save(selectedFile.getName(), filepath, filetype, filesize);
+                save(selectedFile.getName(), filepath, filetype, filesize, localDate);
                 moveFile(fileChooser, selectedFile, filepath);
             } catch (FSSException e) {
                 error(e.getMessage());
@@ -193,13 +199,14 @@ public class FSSC {
     /**
      * Saves the filename, filepath, filetype and filesize into the database and gets added to the folder list.
      *
-     * @param filename filename
-     * @param filepath filepath
-     * @param filetype filetype
-     * @param filesize filesize
+     * @param filename  filename
+     * @param filepath  filepath
+     * @param filetype  filetype
+     * @param filesize  filesize
+     * @param localDate
      */
-    private void save(String filename, String filepath, String filetype, int filesize) throws FSSException {
-        model = new FSSFile(filename, filepath, filetype, filesize);
+    private void save(String filename, String filepath, String filetype, int filesize, LocalDate localDate) throws FSSException {
+        model = new FSSFile(filename, filepath, filetype, filesize, localDate);
         model.save();
     }
 

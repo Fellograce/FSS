@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  * FileCheckerThread checks if an user added a file to the shared folder.
@@ -39,7 +42,11 @@ public class FileCheckerThread extends Thread {
                             String filetype = fileArray[fileArray.length - 1]; //File type
                             String filepath = sharedFolderPath + file.getName();
 
-                            FSSFile fssFile = new FSSFile(file.getName(), filepath, filetype, filesize);
+                            // Last-Modified-Date
+                            long date = file.lastModified();
+                            LocalDate localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate();
+
+                            FSSFile fssFile = new FSSFile(file.getName(), filepath, filetype, filesize, localDate);
                             //Adds to the list
                             Folder.getInstance().saveFile(fssFile);
                         });
