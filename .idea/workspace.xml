@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6193a09-2c00-49f9-b8ce-fbbc45488857" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_01_2023_11_28_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +30,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/schule/4. Jahr/FSS/fss",
+    "last_opened_file_path": "C:/Users/alexa/IdeaProjects/FSS/fss",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -71,6 +75,8 @@
       <workItem from="1673525880006" duration="756000" />
       <workItem from="1673938714846" duration="2732000" />
       <workItem from="1674554315862" duration="23000" />
+      <workItem from="1684216832901" duration="349000" />
+      <workItem from="1684217566487" duration="133000" />
     </task>
     <servers />
   </component>
