@@ -34,7 +34,7 @@ public class FileCheckerThread extends Thread {
                         File file = new File(sharedFolderPath + fileName);
                         // update the UI on the JavaFX Application Thread
                         Platform.runLater(() -> {
-                            String filesize = String.valueOf(file.length() + " B");
+                            int filesize = (int) (file.length() / 1024);
                             String[] fileArray = file.getName().split("\\.");
                             String filetype = fileArray[fileArray.length - 1]; //File type
                             String filepath = sharedFolderPath + file.getName();

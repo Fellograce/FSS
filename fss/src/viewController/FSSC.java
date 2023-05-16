@@ -7,10 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FSSException;
@@ -47,7 +46,19 @@ public class FSSC {
     }
 
     @FXML
-    private ListView<FSSFile> lvFile;
+    private TableView<FSSFile> tvFiles;
+
+    @FXML
+    private TableColumn<FSSFile, String> tcFiles;
+
+    @FXML
+    private TableColumn<FSSFile, String> tcType;
+
+    @FXML
+    private TableColumn<FSSFile, String> tcDate;
+
+    @FXML
+    private TableColumn<FSSFile, Integer> tcSize;
 
     private FSSFile model;
 
@@ -74,8 +85,20 @@ public class FSSC {
      * mode of the ListView to "multiple".
      */
     public void initialize() {
-        lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
-        lvFile.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tcFiles.setCellValueFactory(new PropertyValueFactory<>("filename"));
+        tcType.setCellValueFactory(new PropertyValueFactory<>("filetype"));
+        tcDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        tcSize.setCellValueFactory(new PropertyValueFactory<>("filesize"));
+
+        tcSize.setCellFactory(e -> {
+            TextFieldTableCell<FSSFile, Integer> cell = new TextFieldTableCell<>();
+            cell.setStyle("-fx-alignment: center-right;");
+            return cell;
+        });
+
+
+        tvFiles.itemsProperty().bind(Folder.getInstance().folderProperty());
+        tvFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     /**
@@ -95,7 +118,7 @@ public class FSSC {
         }
 
         for (File selectedFile : selectedFiles) {
-            String filesize = String.valueOf(selectedFile.length() + " B");
+            int filesize = (int) (selectedFile.length() / 1024);
             String[] file = selectedFile.getName().split("\\.");
 
             // "file.length - 1" to ensure to get the filetype because the file can have more than more dots.
@@ -118,7 +141,7 @@ public class FSSC {
      * directory: 'FileUtils.copyFileToDirectory(source, destination);'
      */
     private void downloadFile() {
-        ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
+        ObservableList<FSSFile> fileList = tvFiles.getSelectionModel().getSelectedItems();
         for (FSSFile fssFile : fileList) {
             File source = new File(fssFile.getFilepath());
 
@@ -175,7 +198,7 @@ public class FSSC {
      * @param filetype filetype
      * @param filesize filesize
      */
-    private void save(String filename, String filepath, String filetype, String filesize) throws FSSException {
+    private void save(String filename, String filepath, String filetype, int filesize) throws FSSException {
         model = new FSSFile(filename, filepath, filetype, filesize);
         model.save();
     }

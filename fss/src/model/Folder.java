@@ -6,6 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.LinkedList;
 
 /**
@@ -84,16 +87,20 @@ public class Folder {
         if (directoryListing != null) {
             for (File child : directoryListing) {
                 //Every folder, that has a picture in it, includes a hidden file called 'Thumbs.db'.
-                // The if-statement exclude this specific file.
+                // The if-statement excludes this specific file.
                 if (!child.getName().equals("Thumbs.db")) {
                     String[] file = child.getName().split("\\.");
 
                     String filename = child.getName();
                     String filepath = child.getPath();
                     String filetype = file[file.length - 1];
-                    String filesize = child.length() + " B";
+                    int filesize = (int) (child.length() / 1024);
 
-                    FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize);
+                    // LocalDate
+                    long date = child.lastModified();
+                    LocalDate localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate();
+
+                    FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize, localDate);
                     System.out.println(fssFile);
 
                     folder.add(fssFile);

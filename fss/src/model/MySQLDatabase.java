@@ -13,8 +13,8 @@ import java.sql.*;
  */
 public class MySQLDatabase {
     private static final String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11591230";
-    private static final String user = "sql11591230";
-    private static final String password = "m41fl9v1HN";
+    private static final String user = "sql7618672";
+    private static final String password = "sEU846nqBK";
 
 
     /**
@@ -41,7 +41,7 @@ public class MySQLDatabase {
             pstmt.setString(1, fssFile.getFilename());
             pstmt.setString(2, fssFile.getFiletype());
             pstmt.setString(3, fssFile.getFilepath());
-            pstmt.setString(4, fssFile.getFilesize());
+            //pstmt.setString(4, fssFile.getFilesize());
             pstmt.executeUpdate();
             pstmt.close();
             System.out.println("Inserted datas to the database");

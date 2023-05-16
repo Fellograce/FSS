@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -9,7 +10,8 @@ public class FSSFile {
     private String filename;
     private String filepath;
     private String filetype;
-    private String filesize;
+    private int filesize;
+    private LocalDate creationDate;
 
     /**
      * Default-Constructor
@@ -25,11 +27,19 @@ public class FSSFile {
      * @param filetype
      * @param filesize
      */
-    public FSSFile(String filename, String filepath, String filetype, String filesize) {
+    public FSSFile(String filename, String filepath, String filetype, int filesize) {
         setFilename(filename);
         setFilepath(filepath);
         setFiletype(filetype);
         setFilesize(filesize);
+    }
+
+    public FSSFile(String filename, String filepath, String filetype, int filesize, LocalDate creationDate) {
+        setFilename(filename);
+        setFilepath(filepath);
+        setFiletype(filetype);
+        setFilesize(filesize);
+        setCreationDate(creationDate);
     }
 
     /**
@@ -88,7 +98,7 @@ public class FSSFile {
      * Getter for Filesize
      * @return filesize
      */
-    public String getFilesize() {
+    public int getFilesize() {
         return filesize;
     }
 
@@ -96,8 +106,16 @@ public class FSSFile {
      * Setter for Filesize
      * @param filesize filesize
      */
-    public void setFilesize(String filesize) {
+    public void setFilesize(int filesize) {
         this.filesize = filesize;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     /**
