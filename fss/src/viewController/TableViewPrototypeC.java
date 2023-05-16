@@ -9,8 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.FSSException;
 import model.FSSFile;
 import model.Folder;
@@ -44,7 +46,7 @@ public class TableViewPrototypeC {
     private TableColumn<FSSFile, String> tcDate;
 
     @FXML
-    private TableColumn<FSSFile, String> tcSize;
+    private TableColumn<FSSFile, Integer> tcSize;
 
     @FXML
     void btDownloadOnAction(ActionEvent actionEvent) {
@@ -56,8 +58,8 @@ public class TableViewPrototypeC {
         uploadFile();
     }
 
-    @FXML
-    private ListView<FSSFile> lvFile;
+    //@FXML
+    //private ListView<FSSFile> lvFile;
 
     private FSSFile model;
 
@@ -66,7 +68,7 @@ public class TableViewPrototypeC {
 
     public static void show(Stage stage) {
         try {
-            FXMLLoader loader = new FXMLLoader(FSSC.class.getResource("FSSV.fxml"));
+            FXMLLoader loader = new FXMLLoader(FSSC.class.getResource("tableViewPrototype.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -87,10 +89,19 @@ public class TableViewPrototypeC {
     public void initialize() {
         tcFiles.setCellValueFactory(new PropertyValueFactory<>("filename"));
         tcType.setCellValueFactory(new PropertyValueFactory<>("filetype"));
-        tcDate.setCellValueFactory(new PropertyValueFactory<>("filename"));
+        tcDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
         tcSize.setCellValueFactory(new PropertyValueFactory<>("filesize"));
-        tvFiles.setItems(Folder.getInstance().getFolder());
+
+        tcSize.setCellFactory(e -> {
+            TextFieldTableCell<FSSFile, Integer> cell = new TextFieldTableCell<>();
+            cell.setStyle("-fx-alignment: center-right;");
+            return cell;
+        });
+
+
+        tvFiles.itemsProperty().bind(Folder.getInstance().folderProperty());
         tvFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
 
 
         /*
@@ -116,7 +127,7 @@ public class TableViewPrototypeC {
         }
 
         for (File selectedFile : selectedFiles) {
-            String filesize = String.valueOf(selectedFile.length() + " B");
+            int filesize = (int) (selectedFile.length() / 1024);
             String[] file = selectedFile.getName().split("\\.");
 
             // "file.length - 1" to ensure to get the filetype because the file can have more than more dots.
@@ -139,6 +150,7 @@ public class TableViewPrototypeC {
      * directory: 'FileUtils.copyFileToDirectory(source, destination);'
      */
     private void downloadFile() {
+        /*
         ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
         for (FSSFile fssFile : fileList) {
             File source = new File(fssFile.getFilepath());
@@ -163,6 +175,8 @@ public class TableViewPrototypeC {
             dest = new File(downloadFolderPath + source.getName());
             dest.setLastModified(date.getTime());
         }
+
+         */
     }
 
     /**
@@ -196,7 +210,7 @@ public class TableViewPrototypeC {
      * @param filetype filetype
      * @param filesize filesize
      */
-    private void save(String filename, String filepath, String filetype, String filesize) throws FSSException {
+    private void save(String filename, String filepath, String filetype, int filesize) throws FSSException {
         model = new FSSFile(filename, filepath, filetype, filesize);
         model.save();
     }

@@ -41,7 +41,7 @@ public class MySQLDatabase {
             pstmt.setString(1, fssFile.getFilename());
             pstmt.setString(2, fssFile.getFiletype());
             pstmt.setString(3, fssFile.getFilepath());
-            pstmt.setString(4, fssFile.getFilesize());
+            //pstmt.setString(4, fssFile.getFilesize());
             pstmt.executeUpdate();
             pstmt.close();
             System.out.println("Inserted datas to the database");

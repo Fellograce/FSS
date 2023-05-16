@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import model.FileCheckerThread;
 import model.Folder;
 import viewController.FSSC;
+import viewController.TableViewPrototypeC;
 
 /**
  * Main
@@ -47,6 +48,6 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        FSSC.show(stage);
+        TableViewPrototypeC.show(stage);
     }
 }

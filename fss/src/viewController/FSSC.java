@@ -95,7 +95,7 @@ public class FSSC {
         }
 
         for (File selectedFile : selectedFiles) {
-            String filesize = String.valueOf(selectedFile.length() + " B");
+            int filesize = (int) (selectedFile.length() / 1024);
             String[] file = selectedFile.getName().split("\\.");
 
             // "file.length - 1" to ensure to get the filetype because the file can have more than more dots.
@@ -175,7 +175,7 @@ public class FSSC {
      * @param filetype filetype
      * @param filesize filesize
      */
-    private void save(String filename, String filepath, String filetype, String filesize) throws FSSException {
+    private void save(String filename, String filepath, String filetype, int filesize) throws FSSException {
         model = new FSSFile(filename, filepath, filetype, filesize);
         model.save();
     }
