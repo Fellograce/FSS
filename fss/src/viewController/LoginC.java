@@ -40,10 +40,13 @@ public class LoginC {
         }
     }
     public void initialize () {
+
     }
 
     private void login() {
-
+        Stage stage = (Stage) btLogin.getScene().getWindow();
+        stage.close();
+        FSSC.show(new Stage());
     }
 
     private void info(String msg){
