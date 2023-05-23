@@ -8,7 +8,7 @@ import java.util.Arrays;
 public enum Deparment {
     IT, HR, Marketing, Buchhaltung, Produktion;
 
-    public ObservableList<Deparment> valuesAsObservableList() {
+    public static ObservableList<Deparment> valuesAsObservableList() {
         return FXCollections.observableList(Arrays.asList(values()));
     }
 }
