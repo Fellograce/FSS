@@ -34,9 +34,16 @@ import java.util.List;
 public class FSSC {
 
     @FXML
+    private Button btDelete;
+    @FXML
     private Button btDownload;
     @FXML
     private Button btUpload;
+
+    @FXML
+    void btDeleteOnAction(ActionEvent actionEvent){
+        deleteFile();
+    }
 
     @FXML
     void btDownloadOnAction(ActionEvent actionEvent) {
@@ -194,6 +201,12 @@ public class FSSC {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void deleteFile(){
+        tvFiles.getItems().remove(tvFiles.getSelectionModel().getSelectedItem());
+        File source = new File(tvFiles.getSelectionModel().getSelectedItem().getFilepath());
+        source.delete();
     }
 
     /**
