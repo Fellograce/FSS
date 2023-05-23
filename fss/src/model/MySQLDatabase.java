@@ -128,6 +128,26 @@ public class MySQLDatabase {
         }
     }
 
+    public PreparedStatement getEmployeeSelect() {
+        return employeeSelect;
+    }
+
+    public PreparedStatement getEmployeeInsert() {
+        return employeeInsert;
+    }
+
+    public PreparedStatement getFileInsert() {
+        return fileInsert;
+    }
+
+    public PreparedStatement getFileDelete() {
+        return fileDelete;
+    }
+
+    public PreparedStatement getDepartmentSelect() {
+        return departmentSelect;
+    }
+
     /**
      * Checks if the filename already exist in the database
      *
