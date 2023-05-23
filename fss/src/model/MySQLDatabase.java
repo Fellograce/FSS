@@ -5,13 +5,8 @@ import java.sql.*;
 import java.util.Properties;
 
 /**
- * A MySql database is being used to store different data of a file.
- * For now the database consist 1 table named 'file' with 4 columns:
- *      name varchar(255) primary key,
- *      type varchar(10),
- *      path varchar(255),
- *      size varchar(30)
- *
+ * A MySql database is being used to store different data of a file. For now the database consist 1 table named 'file'
+ * with 4 columns: name varchar(255) primary key, type varchar(10), path varchar(255), size varchar(30)
  */
 public class MySQLDatabase {
     private String url;
@@ -19,6 +14,11 @@ public class MySQLDatabase {
     private String password;
     private Connection connection;
     private static MySQLDatabase instance;
+    private PreparedStatement employeeSelect;
+    private PreparedStatement employeeInsert;
+    private PreparedStatement fileInsert;
+    private PreparedStatement fileDelete;
+    private PreparedStatement departmentSelect;
 
     public MySQLDatabase() {
         try (FileInputStream in = new FileInputStream("dbconnect.properties")) {
@@ -49,9 +49,16 @@ public class MySQLDatabase {
         return instance;
     }
 
-    public static void open() {
+    public static void open() throws SQLException {
         instance = new MySQLDatabase();
+
+        instance.createEmployeeSelect();
+        instance.createEmployeeInsert();
+        instance.createFileInsert();
+        instance.createFileDelete();
+        instance.createDepartmentSelect();
     }
+
 
     public static void close() {
         try {
@@ -62,6 +69,31 @@ public class MySQLDatabase {
         }
     }
 
+    private void createFileDelete() throws SQLException {
+        String sql = "DELETE FROM file WHERE name = ?";
+        fileDelete = connection.prepareStatement(sql);
+    }
+
+    private void createFileInsert() throws SQLException {
+        String sql = "INSERT INTO file (name, type, path, size, date, departmentID) values (?, ?, ?, ?, ?, ?)";
+        fileInsert = connection.prepareStatement(sql);
+    }
+
+    private void createEmployeeInsert() throws SQLException {
+        String sql = "INSERT INTO employee (username, password, authority, departmentID) values (?, ?, ?, ?)";
+        employeeInsert = connection.prepareStatement(sql);
+    }
+
+    private void createEmployeeSelect() throws SQLException {
+        String sql = "SELECT e.username, e.password, e.authority, d.name FROM employee e where username = ? AND password = ? " +
+                "INNER JOIN department d USING(departmentID)";
+        employeeSelect = connection.prepareStatement(sql);
+    }
+
+    private void createDepartmentSelect() throws SQLException {
+        String sql = "SELECT departmentID, name FROM department where name = ?";
+        departmentSelect = connection.prepareStatement(sql);
+    }
 
     /**
      * Insert data into the MySql Database
@@ -98,6 +130,7 @@ public class MySQLDatabase {
 
     /**
      * Checks if the filename already exist in the database
+     *
      * @param fssFile fssFile
      * @return exist
      */

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@sql7.freesqldatabase.com" uuid="4bcf0ae1-eac6-4e25-86aa-91c4ab79f819">
+    <data-source source="LOCAL" name="sql7618672@sql7.freesqldatabase.com" uuid="ccdb74e6-3279-4ee2-a81a-952df759f15a">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://sql7.freesqldatabase.com:3306</jdbc-url>
+      <jdbc-url>jdbc:mysql://sql7.freesqldatabase.com:3306/sql7618672</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

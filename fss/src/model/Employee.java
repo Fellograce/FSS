@@ -7,6 +7,7 @@ public class Employee {
     private String username;
     private String password;
     private boolean authority;
+    private Deparment deparment;
 
 
     public Employee() {
@@ -51,6 +52,14 @@ public class Employee {
         this.authority = authority;
     }
 
+    public Deparment getDeparment() {
+        return deparment;
+    }
+
+    public void setDeparment(Deparment deparment) {
+        this.deparment = deparment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,6 +82,5 @@ public class Employee {
     }
 
     public void save() throws FSSException {
-        MySQLDatabase.getInstance().insert(this);
     }
 }
