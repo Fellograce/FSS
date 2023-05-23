@@ -1,5 +1,8 @@
 package model;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -142,7 +145,30 @@ public class FSSFile {
      * Saves FSSFile into the folder list and into the database
      */
     public void save() throws FSSException {
-        MySQLDatabase.getInstance().insert(this);
+        PreparedStatement pstmt = MySQLDatabase.getInstance().getFileInsert();
+        try {
+            pstmt.setString(1, getFilename());
+            pstmt.setString(2, getFiletype());
+            pstmt.setString(3, getFilepath());
+            pstmt.setInt(4, getFilesize());
+            pstmt.setDate(5, Date.valueOf(getCreationDate()));
+            pstmt.setInt(6, 1);
+            pstmt.execute();
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("23505")) {
+                throw new FSSException("File " + getFilename() + " already exist! Please change the filename!");
+            }
+        }
         Folder.getInstance().saveFile(this);
+    }
+
+    public void delete() {
+        PreparedStatement pstmt = MySQLDatabase.getInstance().getFileDelete();
+        try {
+            pstmt.setString(1, getFilename());
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

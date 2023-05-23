@@ -204,10 +204,11 @@ public class FSSC {
     }
 
     private void deleteFile() {
-        FSSFile files = tvFiles.getSelectionModel().getSelectedItem();
+        FSSFile fssFile = tvFiles.getSelectionModel().getSelectedItem();
         tvFiles.getItems().remove(tvFiles.getSelectionModel().getSelectedItem());
-        File source = new File(files.getFilepath());
+        File source = new File(fssFile.getFilepath());
         source.delete();
+        fssFile.delete();
     }
 
     /**
