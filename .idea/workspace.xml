@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d6193a09-2c00-49f9-b8ce-fbbc45488857" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fss/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fss/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fss/fss.iml" beforeDir="false" afterPath="$PROJECT_DIR$/fss/fss.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fss/out/production/fss/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/fss/out/production/fss/main/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fss/out/production/fss/model/FSSFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/fss/out/production/fss/model/FSSFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fss/out/production/fss/model/Folder.class" beforeDir="false" afterPath="$PROJECT_DIR$/fss/out/production/fss/model/Folder.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,17 +32,17 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/alexa/IdeaProjects/FSS/fss",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/alexa/IdeaProjects/FSS/fss&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\alexa\FSS\fss\src\main" />
