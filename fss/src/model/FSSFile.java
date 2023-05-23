@@ -21,19 +21,12 @@ public class FSSFile {
 
     /**
      * Constructor
-     *
      * @param filename
      * @param filepath
      * @param filetype
      * @param filesize
+     * @param creationDate
      */
-    public FSSFile(String filename, String filepath, String filetype, int filesize) {
-        setFilename(filename);
-        setFilepath(filepath);
-        setFiletype(filetype);
-        setFilesize(filesize);
-    }
-
     public FSSFile(String filename, String filepath, String filetype, int filesize, LocalDate creationDate) {
         setFilename(filename);
         setFilepath(filepath);
@@ -149,7 +142,7 @@ public class FSSFile {
      * Saves FSSFile into the folder list and into the database
      */
     public void save() throws FSSException {
-        MySQLDatabase.insert(this);
+        MySQLDatabase.getInstance().insert(this);
         Folder.getInstance().saveFile(this);
     }
 }

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.FileCheckerThread;
 import model.Folder;
+import model.MySQLDatabase;
 import viewController.FSSC;
 import viewController.LoginC;
 
@@ -25,6 +26,7 @@ public class Main extends Application {
         super.init();
         Folder.getInstance().loadAllFiles();
         fileCheckerThread.start();
+        MySQLDatabase.open();
     }
 
     /**
@@ -35,6 +37,7 @@ public class Main extends Application {
     public void stop() throws Exception {
         super.stop();
         fileCheckerThread.interrupt();
+        MySQLDatabase.close();
     }
 
     /**

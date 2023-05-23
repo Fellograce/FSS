@@ -1,6 +1,8 @@
 package model;
 
+import java.io.FileInputStream;
 import java.sql.*;
+import java.util.Properties;
 
 /**
  * A MySql database is being used to store different data of a file.
@@ -12,9 +14,53 @@ import java.sql.*;
  *
  */
 public class MySQLDatabase {
-    private static final String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11591230";
-    private static final String user = "sql7618672";
-    private static final String password = "sEU846nqBK";
+    private String url;
+    private String username;
+    private String password;
+    private Connection connection;
+    private static MySQLDatabase instance;
+
+    public MySQLDatabase() {
+        try (FileInputStream in = new FileInputStream("dbconnect.properties")) {
+            Properties prop = new Properties();
+            prop.load(in);
+            url = prop.getProperty("url");
+            username = prop.getProperty("username");
+            password = prop.getProperty("password");
+
+            // Alles da?
+            if (url == null || username == null || password == null) {
+                throw new Exception("Fehler! Property File muss driver, url, username, password enthalten!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(2);
+        }
+    }
+
+    public static MySQLDatabase getInstance() {
+        return instance;
+    }
+
+    public static void open() {
+        instance = new MySQLDatabase();
+    }
+
+    public static void close() {
+        try {
+            getInstance().connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
 
 
     /**
@@ -22,14 +68,14 @@ public class MySQLDatabase {
      *
      * @param fssFile fssFile
      */
-    public static void insert(FSSFile fssFile) throws FSSException {
+    public void insert(FSSFile fssFile) throws FSSException {
         //Checks if the same filename already exist in the database.
         //  if true --> an Exception gets thrown
         if (check(fssFile)) {
             throw new FSSException("File " + fssFile.getFilename() + " already exist, please change the filename");
         }
 
-        try (Connection c = DriverManager.getConnection(url, user, password)) {
+        try {
             String sql = "INSERT INTO file (name, type, path, size) VALUES (?,?,?,?)";
 
             //A PreparedStatement is being used explicit for the filepath and to solve SQL Injection.
@@ -37,7 +83,7 @@ public class MySQLDatabase {
             //  with using the 'normal' Statement.
             //  With the help of PreparedStatement the backslashes will not get
             //  ignored during the insertion.
-            PreparedStatement pstmt = c.prepareStatement(sql);
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, fssFile.getFilename());
             pstmt.setString(2, fssFile.getFiletype());
             pstmt.setString(3, fssFile.getFilepath());
@@ -55,11 +101,11 @@ public class MySQLDatabase {
      * @param fssFile fssFile
      * @return exist
      */
-    private static boolean check(FSSFile fssFile) {
+    private boolean check(FSSFile fssFile) {
         boolean exist = false;
-        try (Connection c = DriverManager.getConnection(url, user, password)) {
+        try {
             String sql = "SELECT name FROM file where name like '" + fssFile.getFilename() + "'";
-            Statement st = c.createStatement();
+            Statement st = connection.createStatement();
             ResultSet result = st.executeQuery(sql);
             if (result.next()) {
                 //If result has a next line means that the filename already exist in the database.
