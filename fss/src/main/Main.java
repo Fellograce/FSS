@@ -6,6 +6,7 @@ import model.FileCheckerThread;
 import model.Folder;
 import model.MySQLDatabase;
 import viewController.FSSC;
+import viewController.LoginC;
 
 /**
  * Main
@@ -50,6 +51,6 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        FSSC.show(stage);
+        LoginC.show(stage);
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<HBox prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2A363F;" stylesheets="@fssStyle.css"
+      xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="viewController.FSSC">
+    <children>
+        <VBox prefHeight="400.0" prefWidth="156.0">
+            <children>
+                <Button fx:id="btDownload" ellipsisString="" onAction="#btDownloadOnAction" text="Herunterladen"
+                        VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="20.0"/>
+                    </VBox.margin>
+                </Button>
+                <Button fx:id="btUpload" onAction="#btUploadOnAction" prefHeight="31.0" prefWidth="123.0"
+                        text="Hochladen">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="10.0"/>
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+        <TableView fx:id="tvFiles" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="tcFiles" editable="false" minWidth="111.0" prefWidth="75.0" text="Name"/>
+                <TableColumn fx:id="tcType" editable="false" minWidth="111.0" prefWidth="75.0" text="Dateiart"/>
+                <TableColumn fx:id="tcDate" editable="false" minWidth="111.0" prefWidth="75.0" text="Erstelldatum"/>
+                <TableColumn fx:id="tcSize" editable="false" minWidth="111.0" prefWidth="75.0" text="Dateigröße in KB"/>
+            </columns>
+        </TableView>
+    </children>
+</HBox>
