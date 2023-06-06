@@ -13,7 +13,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Department;
-import model.Department;
 import model.UserAdministration;
 
 import java.io.IOException;
@@ -39,14 +38,20 @@ public class UserAdminC {
     @FXML
     private Button cancel;
 
-    ObservableList<Boolean> authorityItems = FXCollections.observableArrayList(true, false);
-    UserAdministration model;
+    private ObservableList<Boolean> authorityItems = FXCollections.observableArrayList(true, false);
+    private UserAdministration model;
+
+    public UserAdminC() {
+        model = new UserAdministration();
+    }
 
     public static void show(Stage stage) {
         try {
-
             FXMLLoader loader = new FXMLLoader(UserAdminC.class.getResource("UserAdministration.fxml"));
             Parent root = loader.load();
+
+            UserAdminC userAdminC = loader.getController();
+            userAdminC.initialize();
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -58,15 +63,13 @@ public class UserAdminC {
         }
     }
 
-    public void initialize () {
+    private void initialize() {
         usernameInput.textProperty().bindBidirectional(model.usernameProperty());
         passwordInput.textProperty().bindBidirectional(model.passwordProperty());
         departmentCB.setItems(Department.valuesAsObservableList());
         departmentCB.valueProperty().bindBidirectional(model.departmentProperty());
         authorityCB.setItems(authorityItems);
         authorityCB.valueProperty().bindBidirectional(model.authorityProperty());
-
-
     }
 
     @FXML
@@ -92,9 +95,4 @@ public class UserAdminC {
         departmentCB.setValue(null);
 
     }
-
-        
-
-
-
 }

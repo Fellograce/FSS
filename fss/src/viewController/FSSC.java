@@ -36,6 +36,9 @@ public class FSSC {
     private Button btUpload;
 
     @FXML
+    private Button btAdmin;
+
+    @FXML
     void btDeleteOnAction(ActionEvent actionEvent) {
         deleteFile();
     }
@@ -48,6 +51,11 @@ public class FSSC {
     @FXML
     void btUploadOnAction(ActionEvent actionEvent) throws IOException {
         uploadFile();
+    }
+
+    @FXML
+    void btAdminOnAction(ActionEvent actionEvent) {
+        UserAdminC.show(new Stage());
     }
 
     @FXML

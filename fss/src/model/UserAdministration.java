@@ -3,6 +3,7 @@ package model;
 import javafx.beans.property.*;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserAdministration {
@@ -10,6 +11,9 @@ public class UserAdministration {
     private final StringProperty password = new SimpleStringProperty();
     private final BooleanProperty authority = new SimpleBooleanProperty();
     private final ObjectProperty<Department> department = new SimpleObjectProperty<>();
+
+    public UserAdministration() {
+    }
 
     public UserAdministration(String username, String password, boolean authority, Department department) {
         setUsername(username);
@@ -67,15 +71,21 @@ public class UserAdministration {
     }
 
     public void save() throws SQLException {
-        try{
+        try {
+            PreparedStatement departmentStatement = MySQLDatabase.getInstance().getDepartmentSelect();
+            departmentStatement.setString(1, getDepartment().toString());
+            ResultSet rsDepartment = departmentStatement.executeQuery();
+
+            rsDepartment.next();
+
             PreparedStatement pstmt = MySQLDatabase.getInstance().getEmployeeInsert();
             pstmt.setString(1, getUsername());
             pstmt.setString(2, getPassword());
             pstmt.setBoolean(3, isAuthority());
-            pstmt.setObject(4, getDepartment());
-        }
-        catch (SQLException e) {
-            throw e;
+            pstmt.setInt(4, rsDepartment.getInt("departmentID"));
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
