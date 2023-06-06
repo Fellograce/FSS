@@ -12,20 +12,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.FSSException;
-import model.FSSFile;
-import model.Folder;
-import org.apache.commons.io.FileUtils;
+import model.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +35,7 @@ public class FSSC {
     private Button btUpload;
 
     @FXML
-    void btDeleteOnAction(ActionEvent actionEvent){
+    void btDeleteOnAction(ActionEvent actionEvent) {
         deleteFile();
     }
 
@@ -72,8 +66,6 @@ public class FSSC {
 
     private FSSFile model;
 
-    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\fss\\files\\";
-    private final String downloadFolderPath = System.getProperty("user.home") + "/Downloads/";
 
     public static void show(Stage stage) {
         try {
@@ -127,24 +119,8 @@ public class FSSC {
             return;
         }
 
-        for (File selectedFile : selectedFiles) {
-            int filesize = (int) (selectedFile.length() / 1024);
-            String[] file = selectedFile.getName().split("\\.");
-
-            // "file.length - 1" to ensure to get the filetype because the file can have more than more dots.
-            String filetype = file[file.length - 1]; //File type
-            String filepath = sharedFolderPath + selectedFile.getName();
-
-            long date = selectedFile.lastModified();
-            LocalDate localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate();
-
-            try {
-                save(selectedFile.getName(), filepath, filetype, filesize, localDate);
-                moveFile(fileChooser, selectedFile, filepath);
-            } catch (FSSException e) {
-                error(e.getMessage());
-            }
-        }
+        UploadThread uploadThread = new UploadThread(selectedFiles, fileChooser);
+        new Thread(uploadThread).start();
     }
 
     /**
@@ -155,74 +131,16 @@ public class FSSC {
      */
     private void downloadFile() {
         ObservableList<FSSFile> fileList = tvFiles.getSelectionModel().getSelectedItems();
-        for (FSSFile fssFile : fileList) {
-            File source = new File(fssFile.getFilepath());
-
-            File dest = new File(downloadFolderPath);
-            try {
-                FileUtils.copyFileToDirectory(source, dest);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //Change date of the downloaded file in order the file to show up on top of the download directory.
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            Date date = new Date();
-
-            try {
-                date = formatter.parse(formatter.format(date));
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-
-            dest = new File(downloadFolderPath + source.getName());
-            dest.setLastModified(date.getTime());
-        }
-    }
-
-    /**
-     * The chosen file is getting moved to an already set folder. The FileName is already initialized with the selected
-     * file name. The FilePath is already initialized with the path of the target folder (the shared folder). To avoid
-     * errors, the file can only be copied if the target folder is not null. How to use the copy command:
-     * 'Files.copy(fromPath, toPath, options);'
-     *
-     * @param fileChooser
-     * @param selectedFile
-     * @param filepath
-     */
-    private void moveFile(FileChooser fileChooser, File selectedFile, String filepath) {
-        fileChooser.setInitialFileName(selectedFile.getName());
-        File targetFolder = new File(filepath);
-        fileChooser.setInitialDirectory(targetFolder);
-        if (targetFolder != null) {
-            try {
-                Files.copy(selectedFile.toPath(), targetFolder.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        DownloadThread downloadThread = new DownloadThread(fileList);
+        new Thread(downloadThread).start();
     }
 
     private void deleteFile() {
         FSSFile fssFile = tvFiles.getSelectionModel().getSelectedItem();
         tvFiles.getItems().remove(tvFiles.getSelectionModel().getSelectedItem());
-        File source = new File(fssFile.getFilepath());
-        source.delete();
-        fssFile.delete();
-    }
 
-    /**
-     * Saves the filename, filepath, filetype and filesize into the database and gets added to the folder list.
-     *
-     * @param filename  filename
-     * @param filepath  filepath
-     * @param filetype  filetype
-     * @param filesize  filesize
-     * @param localDate
-     */
-    private void save(String filename, String filepath, String filetype, int filesize, LocalDate localDate) throws FSSException {
-        model = new FSSFile(filename, filepath, filetype, filesize, localDate);
-        model.save();
+        DeleteThread deleteThread = new DeleteThread(fssFile);
+        new Thread(deleteThread).start();
     }
 
     /**
@@ -230,7 +148,7 @@ public class FSSC {
      *
      * @param msg Error-Message
      */
-    private void error(String msg) {
+    public static void error(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg);
         alert.showAndWait();
     }

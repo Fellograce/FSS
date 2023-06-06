@@ -20,10 +20,12 @@ public class LoginC {
     private TextField tfPassword;
     @FXML
     private Button btLogin;
+
     @FXML
-    void btLoginOnAction(ActionEvent event){
+    void btLoginOnAction(ActionEvent event) {
         login();
     }
+
     public static void show(Stage stage) {
         try {
 
@@ -39,7 +41,8 @@ public class LoginC {
             Platform.exit();
         }
     }
-    public void initialize () {
+
+    public void initialize() {
 
     }
 
@@ -50,12 +53,12 @@ public class LoginC {
         FSSC.show(new Stage());
     }
 
-    private void info(String msg){
+    private void info(String msg) {
         Alert info = new Alert(Alert.AlertType.INFORMATION, msg);
         info.showAndWait();
     }
 
-    private void error(String msg){
+    private void error(String msg) {
         Alert err = new Alert(Alert.AlertType.ERROR, msg);
         err.showAndWait();
     }

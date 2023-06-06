@@ -20,7 +20,7 @@ public class MySQLDatabase {
     private PreparedStatement fileDelete;
     private PreparedStatement departmentSelect;
 
-    public MySQLDatabase() {
+    private MySQLDatabase() {
         try (FileInputStream in = new FileInputStream("dbconnect.properties")) {
             Properties prop = new Properties();
             prop.load(in);
@@ -50,7 +50,9 @@ public class MySQLDatabase {
     }
 
     public static void open() throws SQLException {
-        instance = new MySQLDatabase();
+        if (instance == null) {
+            instance = new MySQLDatabase();
+        }
 
         instance.createEmployeeSelect();
         instance.createEmployeeInsert();
@@ -93,39 +95,6 @@ public class MySQLDatabase {
     private void createDepartmentSelect() throws SQLException {
         String sql = "SELECT departmentID, name FROM department where name = ?";
         departmentSelect = connection.prepareStatement(sql);
-    }
-
-    /**
-     * Insert data into the MySql Database
-     *
-     * @param fssFile fssFile
-     */
-    public void insert(FSSFile fssFile) throws FSSException {
-        //Checks if the same filename already exist in the database.
-        //  if true --> an Exception gets thrown
-        if (check(fssFile)) {
-            throw new FSSException("File " + fssFile.getFilename() + " already exist, please change the filename");
-        }
-
-        try {
-            String sql = "INSERT INTO file (name, type, path, size) VALUES (?,?,?,?)";
-
-            //A PreparedStatement is being used explicit for the filepath and to solve SQL Injection.
-            //  Filepath contains multiple backslashes and the backslahes get ignored
-            //  with using the 'normal' Statement.
-            //  With the help of PreparedStatement the backslashes will not get
-            //  ignored during the insertion.
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, fssFile.getFilename());
-            pstmt.setString(2, fssFile.getFiletype());
-            pstmt.setString(3, fssFile.getFilepath());
-            //pstmt.setString(4, fssFile.getFilesize());
-            pstmt.executeUpdate();
-            pstmt.close();
-            System.out.println("Inserted datas to the database");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public PreparedStatement getEmployeeSelect() {
