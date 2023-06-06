@@ -5,10 +5,10 @@ import javafx.collections.ObservableList;
 
 import java.util.Arrays;
 
-public enum Deparment {
+public enum Department {
     IT, HR, Marketing, Buchhaltung, Produktion;
 
-    public static ObservableList<Deparment> valuesAsObservableList() {
+    public static ObservableList<Department> valuesAsObservableList() {
         return FXCollections.observableList(Arrays.asList(values()));
     }
 }

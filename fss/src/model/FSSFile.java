@@ -155,10 +155,11 @@ public class FSSFile {
             pstmt.setInt(6, 1);
             pstmt.execute();
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) {
+            if (e.getSQLState().equals("23000")) {
                 throw new FSSException("File " + getFilename() + " already exist! Please change the filename!");
-            }
+            } else e.printStackTrace();
         }
+
         Folder.getInstance().saveFile(this);
     }
 

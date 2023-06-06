@@ -2,7 +2,6 @@ package model;
 
 import javafx.beans.property.*;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -10,9 +9,9 @@ public class UserAdministration {
     private final StringProperty username = new SimpleStringProperty();
     private final StringProperty password = new SimpleStringProperty();
     private final BooleanProperty authority = new SimpleBooleanProperty();
-    private final ObjectProperty<Deparment> department = new SimpleObjectProperty<>();
+    private final ObjectProperty<Department> department = new SimpleObjectProperty<>();
 
-    public UserAdministration(String username, String password, boolean authority, Deparment department) {
+    public UserAdministration(String username, String password, boolean authority, Department department) {
         setUsername(username);
         setPassword(password);
         setAuthority(authority);
@@ -55,15 +54,15 @@ public class UserAdministration {
         this.authority.set(authority);
     }
 
-    public Deparment getDepartment() {
+    public Department getDepartment() {
         return department.get();
     }
 
-    public ObjectProperty<Deparment> departmentProperty() {
+    public Property<Department> departmentProperty() {
         return department;
     }
 
-    public void setDepartment(Deparment department) {
+    public void setDepartment(Department department) {
         this.department.set(department);
     }
 

@@ -7,7 +7,7 @@ public class Employee {
     private String username;
     private String password;
     private boolean authority;
-    private Deparment deparment;
+    private Department department;
 
 
     public Employee() {
@@ -52,12 +52,12 @@ public class Employee {
         this.authority = authority;
     }
 
-    public Deparment getDeparment() {
-        return deparment;
+    public Department getDeparment() {
+        return department;
     }
 
-    public void setDeparment(Deparment deparment) {
-        this.deparment = deparment;
+    public void setDeparment(Department deparment) {
+        this.department = deparment;
     }
 
     @Override
