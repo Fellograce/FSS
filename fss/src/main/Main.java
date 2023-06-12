@@ -12,7 +12,7 @@ import viewController.LoginC;
  * Main
  */
 public class Main extends Application {
-    private FileCheckerThread fileCheckerThread = new FileCheckerThread();
+    private static Thread fileCheckerThread;
 
     /**
      * Overrides the init() function
@@ -24,8 +24,6 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        Folder.getInstance().loadAllFiles();
-        fileCheckerThread.start();
         MySQLDatabase.open();
     }
 
@@ -52,5 +50,15 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         LoginC.show(stage);
+
+
+    }
+
+    public static Thread getFileCheckerThread() {
+        return fileCheckerThread;
+    }
+
+    public static void setFileCheckerThread(FileCheckerThread fileCheckerThreadPar) {
+        fileCheckerThread = new Thread(fileCheckerThreadPar);
     }
 }

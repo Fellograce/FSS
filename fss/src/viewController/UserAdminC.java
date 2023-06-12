@@ -13,7 +13,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Department;
-import model.UserAdministration;
+import model.Employee;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,11 +39,8 @@ public class UserAdminC {
     private Button cancel;
 
     private ObservableList<Boolean> authorityItems = FXCollections.observableArrayList(true, false);
-    private UserAdministration model;
+    private Employee model = new Employee();
 
-    public UserAdminC() {
-        model = new UserAdministration();
-    }
 
     public static void show(Stage stage) {
         try {

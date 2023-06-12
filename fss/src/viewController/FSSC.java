@@ -16,10 +16,7 @@ import model.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -75,11 +72,16 @@ public class FSSC {
 
     private FSSFile model;
 
+    private Employee employee;
 
-    public static void show(Stage stage) {
+
+    public static void show(Stage stage, Employee employee) {
         try {
             FXMLLoader loader = new FXMLLoader(FSSC.class.getResource("FSSV.fxml"));
             Parent root = loader.load();
+
+            FSSC fssc = loader.getController();
+            fssc.initialize(employee);
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -95,7 +97,9 @@ public class FSSC {
      * The Initialize-Method is used to bind the ListView with the ListProperty in Folder class. And set the selection
      * mode of the ListView to "multiple".
      */
-    public void initialize() {
+    private void initialize(Employee employee) {
+        this.employee = employee;
+
         tcFiles.setCellValueFactory(new PropertyValueFactory<>("filename"));
         tcType.setCellValueFactory(new PropertyValueFactory<>("filetype"));
         tcDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
@@ -110,6 +114,9 @@ public class FSSC {
 
         tvFiles.itemsProperty().bind(Folder.getInstance().folderProperty());
         tvFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        btAdmin.visibleProperty().bind(employee.authorityProperty());
+        btDelete.visibleProperty().bind(employee.authorityProperty());
     }
 
     /**
@@ -128,7 +135,7 @@ public class FSSC {
             return;
         }
 
-        UploadThread uploadThread = new UploadThread(selectedFiles, fileChooser);
+        UploadThread uploadThread = new UploadThread(selectedFiles, fileChooser, employee);
         new Thread(uploadThread).start();
     }
 
@@ -144,6 +151,10 @@ public class FSSC {
         new Thread(downloadThread).start();
     }
 
+
+    /**
+     * Method will start a thread to delete the file from the
+     */
     private void deleteFile() {
         FSSFile fssFile = tvFiles.getSelectionModel().getSelectedItem();
         tvFiles.getItems().remove(tvFiles.getSelectionModel().getSelectedItem());

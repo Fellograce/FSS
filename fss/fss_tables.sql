@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS file
     foreign key (departmentID) references department (departmentID)
 );
 
-CREATE TABLE IF NOT EXISTS angestellte
+CREATE TABLE IF NOT EXISTS employee
 (
     id           int auto_increment primary key,
     username     varchar(255) not null,

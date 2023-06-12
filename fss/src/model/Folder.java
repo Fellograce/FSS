@@ -6,6 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -22,6 +25,23 @@ public class Folder {
     private ListProperty<FSSFile> folder = new SimpleListProperty<>(observableList);
     private static Folder instance;
     private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\fss\\files\\";
+    private Employee employee;
+
+    /**
+     * Getter for Employee
+     * @return
+     */
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    /**
+     * Setter for Employee
+     * @param employee
+     */
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     /**
      * Getter for folder list
@@ -81,7 +101,9 @@ public class Folder {
      * This function gets called in the beginning of the program.
      * The function adds all the files from the shared folder to the list.
      */
-    public void loadAllFiles() {
+    public void loadAllFiles() throws SQLException {
+        PreparedStatement pstmt = MySQLDatabase.getInstance().getFileSelect();
+
         File dir = new File(sharedFolderPath);
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
@@ -100,10 +122,28 @@ public class Folder {
                     long date = child.lastModified();
                     LocalDate localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate();
 
-                    FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize, localDate);
-                    System.out.println(fssFile);
 
-                    folder.add(fssFile);
+                    //Get Department name through the ID
+                    pstmt.setString(1, filename);
+                    ResultSet rs = pstmt.executeQuery();
+                    rs.next();
+
+                    int id = rs.getInt("departmentID");
+                    System.out.println(id);
+
+                    PreparedStatement departmentStatement = MySQLDatabase.getInstance().getDepartmentSelectGetName();
+                    departmentStatement.setInt(1, id);
+                    ResultSet rsDepartment = departmentStatement.executeQuery();
+
+                    rsDepartment.next();
+
+                    //check if same department
+                    if (employee.getDepartment() == Department.valueOf(rsDepartment.getString("name"))) {
+                        FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize, localDate, Department.valueOf(rsDepartment.getString("name")));
+                        System.out.println(fssFile);
+
+                        folder.add(fssFile);
+                    }
                 }
             }
         }

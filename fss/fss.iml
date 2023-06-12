@@ -16,7 +16,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.28.jar!/" />
@@ -25,7 +25,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../ITP/WIDM/FSS Projekt/commons-io-2.11.0-tests.jar!/" />
@@ -40,7 +40,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Documents/JavaJar/commons-io-2.11.0/commons-io-2.11.0-tests.jar!/" />
@@ -57,5 +57,29 @@
     </orderEntry>
     <orderEntry type="library" name="commons-io-2.11" level="project" />
     <orderEntry type="library" name="mysql-connector-j-8.0.33" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/mysql-connector-java-8.0.28.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/commons-io-2.11.0-tests.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/commons-io-2.11.0.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/Downloads/commons-io-2.11.0-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Downloads/commons-io-2.11.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/commons-io-2.11.0-test-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

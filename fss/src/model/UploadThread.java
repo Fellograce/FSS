@@ -12,16 +12,35 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+/**
+ * Thead to upload the selected files from your computer into the system
+ */
 public class UploadThread implements Runnable {
     private List<File> selectedFiles;
     private FileChooser fileChooser;
     private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\fss\\files\\";
+    private Employee employee;
 
-    public UploadThread(List<File> selectedFiles, FileChooser fileChooser) {
+    /**
+     * Contructor
+     * @param selectedFiles
+     * @param fileChooser
+     * @param employee
+     */
+    public UploadThread(List<File> selectedFiles, FileChooser fileChooser, Employee employee) {
         this.selectedFiles = selectedFiles;
         this.fileChooser = fileChooser;
+        this.employee = employee;
     }
 
+
+    /**
+     * Uploads the selected files from your computer to the shared file directory. If the uploadbutton is pressed, a
+     * window opens where the user can select files he wants to upload. After selecting the files and pressing the
+     * 'open' button, the filename, filepath, filetype and filesize will be saved on the Database, and the file will be
+     * copied to the shared folder.
+     *
+     */
     @Override
     public void run() {
         for (File selectedFile : selectedFiles) {
@@ -56,7 +75,7 @@ public class UploadThread implements Runnable {
      * @param localDate date of file
      */
     private void save(String filename, String filepath, String filetype, int filesize, LocalDate localDate) throws FSSException {
-        FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize, localDate);
+        FSSFile fssFile = new FSSFile(filename, filepath, filetype, filesize, localDate, employee.getDepartment());
         fssFile.save();
     }
 

@@ -18,7 +18,9 @@ public class MySQLDatabase {
     private PreparedStatement employeeInsert;
     private PreparedStatement fileInsert;
     private PreparedStatement fileDelete;
-    private PreparedStatement departmentSelect;
+    private PreparedStatement fileSelect;
+    private PreparedStatement departmentSelectGetID;
+    private PreparedStatement departmentSelectGetName;
 
     private MySQLDatabase() {
         try (FileInputStream in = new FileInputStream("dbconnect.properties")) {
@@ -28,10 +30,10 @@ public class MySQLDatabase {
             username = prop.getProperty("username");
             password = prop.getProperty("password");
 
-            // Alles da?
             if (url == null || username == null || password == null) {
                 throw new Exception("Fehler! Property File muss driver, url, username, password enthalten!");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
@@ -58,9 +60,10 @@ public class MySQLDatabase {
         instance.createEmployeeInsert();
         instance.createFileInsert();
         instance.createFileDelete();
-        instance.createDepartmentSelect();
+        instance.createFileSelect();
+        instance.createDepartmentSelectGetID();
+        instance.createDepartmentSelectGetName();
     }
-
 
     public static void close() {
         try {
@@ -69,6 +72,11 @@ public class MySQLDatabase {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    private void createFileSelect() throws SQLException {
+        String sql = "SELECT name, type, path, size, departmentID, date FROM file WHERE name = ?";
+        fileSelect = connection.prepareStatement(sql);
     }
 
     private void createFileDelete() throws SQLException {
@@ -87,14 +95,19 @@ public class MySQLDatabase {
     }
 
     private void createEmployeeSelect() throws SQLException {
-        String sql = "SELECT e.username, e.password, e.authority, d.name FROM employee e where username = ? AND password = ? " +
-                "INNER JOIN department d USING(departmentID)";
+        String sql = "SELECT e.id, e.username, e.password, e.authority, d.name FROM employee e INNER JOIN department d " +
+                "USING(departmentID) WHERE username = ? AND password = ?";
         employeeSelect = connection.prepareStatement(sql);
     }
 
-    private void createDepartmentSelect() throws SQLException {
+    private void createDepartmentSelectGetID() throws SQLException {
         String sql = "SELECT departmentID, name FROM department where name = ?";
-        departmentSelect = connection.prepareStatement(sql);
+        departmentSelectGetID = connection.prepareStatement(sql);
+    }
+
+    private void createDepartmentSelectGetName() throws SQLException {
+        String sql = "SELECT departmentID, name FROM department where departmentID = ?";
+        departmentSelectGetName = connection.prepareStatement(sql);
     }
 
     public PreparedStatement getEmployeeSelect() {
@@ -113,8 +126,16 @@ public class MySQLDatabase {
         return fileDelete;
     }
 
-    public PreparedStatement getDepartmentSelect() {
-        return departmentSelect;
+    public PreparedStatement getDepartmentSelectGetID() {
+        return departmentSelectGetID;
+    }
+
+    public PreparedStatement getFileSelect() {
+        return fileSelect;
+    }
+
+    public PreparedStatement getDepartmentSelectGetName() {
+        return departmentSelectGetName;
     }
 
     /**
