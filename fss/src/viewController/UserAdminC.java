@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -74,13 +75,18 @@ public class UserAdminC {
 
     @FXML
     void submitOnAction(ActionEvent event) throws SQLException {
-        model.save();
-        cancel();
+        save();
     }
 
     @FXML
-    void cancelOnAction(ActionEvent event) throws SQLException {
+    void cancelOnAction(ActionEvent event) {
         cancel();
+    }
+
+    private void save() throws SQLException {
+        model.save();
+        cancel();
+        info("User was succesfully added.");
     }
 
     private void cancel() {
@@ -94,5 +100,14 @@ public class UserAdminC {
         authorityCB.setValue(null);
         departmentCB.setValue(null);
 
+    }
+
+    /**
+     * Alert window to notify the user about successful process
+     * @param msg
+     */
+    private void info(String msg) {
+        Alert info = new Alert(Alert.AlertType.INFORMATION, msg);
+        info.showAndWait();
     }
 }

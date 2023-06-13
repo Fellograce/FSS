@@ -136,7 +136,7 @@ public class LoginC {
 
 
     /**
-     * Alert window to notify the user about successful messages
+     * Alert window to notify the user about successful process
      * @param msg
      */
     private void info(String msg) {
