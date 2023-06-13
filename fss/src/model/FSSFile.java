@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * Model class
+ * Model class to store file attributes like filename
  */
 public class FSSFile {
     private String filename;

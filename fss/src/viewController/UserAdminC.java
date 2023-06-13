@@ -18,6 +18,9 @@ import model.Employee;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Controller for User Administration
+ */
 public class UserAdminC {
 
     @FXML

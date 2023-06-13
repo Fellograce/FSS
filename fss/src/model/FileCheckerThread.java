@@ -87,8 +87,6 @@ public class FileCheckerThread implements Runnable {
                             } catch (SQLException e) {
                                 throw new RuntimeException(e);
                             }
-
-
                         });
                     }
                 }

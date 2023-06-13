@@ -61,7 +61,7 @@ public class Folder {
 
     /**
      * Setter for folder
-     * @param folder
+     * @param folder Folder
      */
     public void setFolder(ObservableList<FSSFile> folder) {
         this.folder.set(folder);
@@ -80,7 +80,7 @@ public class Folder {
 
     /**
      * Setter for instance
-     * @param instance
+     * @param instance Folder
      */
     public static void setInstance(Folder instance) {
         Folder.instance = instance;
