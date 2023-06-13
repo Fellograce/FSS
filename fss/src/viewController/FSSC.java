@@ -7,23 +7,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.FSSException;
-import model.FSSFile;
-import model.Folder;
-import org.apache.commons.io.FileUtils;
+import model.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -31,10 +24,21 @@ import java.util.List;
  */
 public class FSSC {
 
+
+    @FXML
+    private Button btDelete;
     @FXML
     private Button btDownload;
     @FXML
     private Button btUpload;
+
+    @FXML
+    private Button btAdmin;
+
+    @FXML
+    void btDeleteOnAction(ActionEvent actionEvent) {
+        deleteFile();
+    }
 
     @FXML
     void btDownloadOnAction(ActionEvent actionEvent) {
@@ -47,17 +51,37 @@ public class FSSC {
     }
 
     @FXML
-    private ListView<FSSFile> lvFile;
+    void btAdminOnAction(ActionEvent actionEvent) {
+        UserAdminC.show(new Stage());
+    }
+
+    @FXML
+    private TableView<FSSFile> tvFiles;
+
+    @FXML
+    private TableColumn<FSSFile, String> tcFiles;
+
+    @FXML
+    private TableColumn<FSSFile, String> tcType;
+
+    @FXML
+    private TableColumn<FSSFile, LocalDate> tcDate;
+
+    @FXML
+    private TableColumn<FSSFile, Integer> tcSize;
 
     private FSSFile model;
 
-    private final String sharedFolderPath = "\\\\Desktop-rb2dm49\\fss\\files\\";
-    private final String downloadFolderPath = System.getProperty("user.home") + "/Downloads/";
+    private Employee employee;
 
-    public static void show(Stage stage) {
+
+    public static void show(Stage stage, Employee employee) {
         try {
             FXMLLoader loader = new FXMLLoader(FSSC.class.getResource("FSSV.fxml"));
             Parent root = loader.load();
+
+            FSSC fssc = loader.getController();
+            fssc.initialize(employee);
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -73,9 +97,26 @@ public class FSSC {
      * The Initialize-Method is used to bind the ListView with the ListProperty in Folder class. And set the selection
      * mode of the ListView to "multiple".
      */
-    public void initialize() {
-        lvFile.itemsProperty().bind(Folder.getInstance().folderProperty());
-        lvFile.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    private void initialize(Employee employee) {
+        this.employee = employee;
+
+        tcFiles.setCellValueFactory(new PropertyValueFactory<>("filename"));
+        tcType.setCellValueFactory(new PropertyValueFactory<>("filetype"));
+        tcDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        tcSize.setCellValueFactory(new PropertyValueFactory<>("filesize"));
+
+        tcSize.setCellFactory(e -> {
+            TextFieldTableCell<FSSFile, Integer> cell = new TextFieldTableCell<>();
+            cell.setStyle("-fx-alignment: center-right;");
+            return cell;
+        });
+
+
+        tvFiles.itemsProperty().bind(Folder.getInstance().folderProperty());
+        tvFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        btAdmin.visibleProperty().bind(employee.authorityProperty());
+        btDelete.visibleProperty().bind(employee.authorityProperty());
     }
 
     /**
@@ -94,21 +135,8 @@ public class FSSC {
             return;
         }
 
-        for (File selectedFile : selectedFiles) {
-            String filesize = String.valueOf(selectedFile.length() + " B");
-            String[] file = selectedFile.getName().split("\\.");
-
-            // "file.length - 1" to ensure to get the filetype because the file can have more than more dots.
-            String filetype = file[file.length - 1]; //File type
-            String filepath = sharedFolderPath + selectedFile.getName();
-
-            try {
-                save(selectedFile.getName(), filepath, filetype, filesize);
-                moveFile(fileChooser, selectedFile, filepath);
-            } catch (FSSException e) {
-                error(e.getMessage());
-            }
-        }
+        UploadThread uploadThread = new UploadThread(selectedFiles, fileChooser, employee);
+        new Thread(uploadThread).start();
     }
 
     /**
@@ -118,66 +146,21 @@ public class FSSC {
      * directory: 'FileUtils.copyFileToDirectory(source, destination);'
      */
     private void downloadFile() {
-        ObservableList<FSSFile> fileList = lvFile.getSelectionModel().getSelectedItems();
-        for (FSSFile fssFile : fileList) {
-            File source = new File(fssFile.getFilepath());
-
-            File dest = new File(downloadFolderPath);
-            try {
-                FileUtils.copyFileToDirectory(source, dest);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //Change date of the downloaded file in order the file to show up on top of the download directory.
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            Date date = new Date();
-
-            try {
-                date = formatter.parse(formatter.format(date));
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-
-            dest = new File(downloadFolderPath + source.getName());
-            dest.setLastModified(date.getTime());
-        }
+        ObservableList<FSSFile> fileList = tvFiles.getSelectionModel().getSelectedItems();
+        DownloadThread downloadThread = new DownloadThread(fileList);
+        new Thread(downloadThread).start();
     }
 
-    /**
-     * The chosen file is getting moved to an already set folder. The FileName is already initialized with the selected
-     * file name. The FilePath is already initialized with the path of the target folder (the shared folder). To avoid
-     * errors, the file can only be copied if the target folder is not null. How to use the copy command:
-     * 'Files.copy(fromPath, toPath, options);'
-     *
-     * @param fileChooser
-     * @param selectedFile
-     * @param filepath
-     */
-    private void moveFile(FileChooser fileChooser, File selectedFile, String filepath) {
-        fileChooser.setInitialFileName(selectedFile.getName());
-        File targetFolder = new File(filepath);
-        fileChooser.setInitialDirectory(targetFolder);
-        if (targetFolder != null) {
-            try {
-                Files.copy(selectedFile.toPath(), targetFolder.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     /**
-     * Saves the filename, filepath, filetype and filesize into the database and gets added to the folder list.
-     *
-     * @param filename filename
-     * @param filepath filepath
-     * @param filetype filetype
-     * @param filesize filesize
+     * Method will start a thread to delete the file from the
      */
-    private void save(String filename, String filepath, String filetype, String filesize) throws FSSException {
-        model = new FSSFile(filename, filepath, filetype, filesize);
-        model.save();
+    private void deleteFile() {
+        FSSFile fssFile = tvFiles.getSelectionModel().getSelectedItem();
+        tvFiles.getItems().remove(tvFiles.getSelectionModel().getSelectedItem());
+
+        DeleteThread deleteThread = new DeleteThread(fssFile);
+        new Thread(deleteThread).start();
     }
 
     /**
@@ -185,7 +168,7 @@ public class FSSC {
      *
      * @param msg Error-Message
      */
-    private void error(String msg) {
+    public static void error(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg);
         alert.showAndWait();
     }
