@@ -5,8 +5,8 @@ import java.sql.*;
 import java.util.Properties;
 
 /**
- * A MySql database is being used to store different data of a file. For now the database consist 1 table named 'file'
- * with 4 columns: name varchar(255) primary key, type varchar(10), path varchar(255), size varchar(30)
+ * A MySql database is being used to store different data of a file. For now the database consists 3 table named 'file'
+ * 'employee' and 'department'.
  */
 public class MySQLDatabase {
     private String url;

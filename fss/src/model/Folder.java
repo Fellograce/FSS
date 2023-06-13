@@ -129,7 +129,6 @@ public class Folder {
                     rs.next();
 
                     int id = rs.getInt("departmentID");
-                    System.out.println(id);
 
                     PreparedStatement departmentStatement = MySQLDatabase.getInstance().getDepartmentSelectGetName();
                     departmentStatement.setInt(1, id);

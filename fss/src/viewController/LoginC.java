@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Main;
@@ -25,7 +26,7 @@ public class LoginC {
     @FXML
     private TextField tfUsername;
     @FXML
-    private TextField tfPassword;
+    private PasswordField pfPassword;
     @FXML
     private Button btLogin;
 
@@ -66,7 +67,7 @@ public class LoginC {
      */
     private void initialize() {
         tfUsername.textProperty().bindBidirectional(model.usernameProperty());
-        tfPassword.textProperty().bindBidirectional(model.passwordProperty());
+        pfPassword.textProperty().bindBidirectional(model.passwordProperty());
 
         btLogin.disableProperty().bind(model.usernameProperty().isNotEmpty().and(model.passwordProperty().isNotEmpty()).not());
     }
@@ -128,7 +129,7 @@ public class LoginC {
      */
     private void unbind() {
         tfUsername.textProperty().unbindBidirectional(model.usernameProperty());
-        tfPassword.textProperty().unbindBidirectional(model.passwordProperty());
+        pfPassword.textProperty().unbindBidirectional(model.passwordProperty());
 
         btLogin.disableProperty().unbind();
     }

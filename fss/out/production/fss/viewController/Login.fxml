@@ -9,7 +9,8 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox prefHeight="250.0" prefWidth="270.0" style="-fx-background-color: #2A363F;"  stylesheets="@fssStyle.css"
+<?import javafx.scene.control.PasswordField?>
+<VBox prefHeight="250.0" prefWidth="270.0" style="-fx-background-color: #2A363F;" stylesheets="@fssStyle.css"
       xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewController.LoginC">
    <children>
       <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
@@ -36,11 +37,11 @@
             <Insets bottom="8.0" left="20.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="tfPassword" maxWidth="200.0">
+      <PasswordField fx:id="pfPassword" maxWidth="200.0">
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" />
          </VBox.margin>
-      </TextField>
+      </PasswordField>
       <Button fx:id="btLogin" onAction="#btLoginOnAction" text="Einloggen" defaultButton="true">
          <VBox.margin>
             <Insets bottom="10.0" left="20.0" />

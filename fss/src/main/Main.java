@@ -54,10 +54,19 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Getter for fileCheckerThread
+     * @return
+     */
     public static Thread getFileCheckerThread() {
         return fileCheckerThread;
     }
 
+
+    /**
+     * Setter for FileCheckerThread
+     * @param fileCheckerThreadPar
+     */
     public static void setFileCheckerThread(FileCheckerThread fileCheckerThreadPar) {
         fileCheckerThread = new Thread(fileCheckerThreadPar);
     }
